@@ -36,19 +36,16 @@ body{
 button{font-family:inherit;cursor:pointer;border:none;background:none;color:inherit}
 #app{max-width:520px;margin:0 auto;min-height:100%;position:relative;padding-bottom:calc(84px + var(--safe-b))}
 
-/* ---- Header ---- */
 header{padding:calc(16px + var(--safe-t)) 20px 8px;display:flex;align-items:center;justify-content:space-between}
 .h-title{font-size:26px;font-weight:800;letter-spacing:-.5px}
 .h-date{font-size:13px;color:var(--sub);font-weight:600;margin-top:2px}
 .icon-btn{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:var(--card);box-shadow:var(--shadow);transition:transform .15s}
 .icon-btn:active{transform:scale(.9)}
 
-/* ---- Screens ---- */
 .screen{display:none;padding:0 16px;animation:fade .35s}
 .screen.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 
-/* ---- Today summary ring ---- */
 .summary{background:linear-gradient(135deg,var(--accent),var(--accent2));border-radius:24px;padding:20px;margin:8px 4px 18px;color:#fff;display:flex;align-items:center;gap:18px;box-shadow:0 10px 30px rgba(108,92,231,.35);position:relative;overflow:hidden}
 .summary::after{content:"";position:absolute;right:-30px;top:-30px;width:120px;height:120px;background:rgba(255,255,255,.12);border-radius:50%}
 .ring{width:76px;height:76px;flex:none;position:relative}
@@ -57,12 +54,10 @@ header{padding:calc(16px + var(--safe-t)) 20px 8px;display:flex;align-items:cent
 .summary-txt h2{font-size:19px;font-weight:800;margin-bottom:3px}
 .summary-txt p{font-size:13px;opacity:.9;font-weight:500}
 
-/* ---- Section ---- */
 .sec-head{display:flex;align-items:center;justify-content:space-between;padding:6px 8px;margin-top:6px}
 .sec-head h3{font-size:15px;font-weight:800}
 .sec-head .cnt{font-size:12px;color:var(--sub);font-weight:700;background:var(--card);padding:2px 9px;border-radius:20px}
 
-/* ---- Item card ---- */
 .list{display:flex;flex-direction:column;gap:10px;margin-bottom:8px}
 .item{background:var(--card);border-radius:18px;padding:14px;display:flex;align-items:center;gap:13px;box-shadow:var(--shadow);transition:transform .15s,opacity .3s;position:relative;overflow:hidden}
 .item:active{transform:scale(.985)}
@@ -72,39 +67,67 @@ header{padding:calc(16px + var(--safe-t)) 20px 8px;display:flex;align-items:cent
 .item-body .meta{font-size:12px;color:var(--sub);font-weight:600;margin-top:3px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .streak{display:inline-flex;align-items:center;gap:3px;color:var(--gold);font-weight:800}
 .chip{background:var(--card2);padding:2px 8px;border-radius:10px}
-.check{width:30px;height:30px;border-radius:50%;border:2.5px solid var(--line);flex:none;display:grid;place-items:center;transition:.25s;background:transparent}
+.check{width:34px;height:34px;border-radius:50%;border:2.5px solid var(--line);flex:none;display:grid;place-items:center;transition:.25s;background:transparent;position:relative}
 .check svg{opacity:0;transform:scale(.4);transition:.25s;stroke:#fff}
+.check .num{font-size:13px;font-weight:800;color:var(--accent)}
 .item.done .check{background:var(--good);border-color:var(--good)}
 .item.done .check svg{opacity:1;transform:scale(1)}
+.item.done .check .num{display:none}
 .item.done .nm{color:var(--sub);text-decoration:line-through}
 .item.done{opacity:.72}
 .item.pop{animation:pop .4s}
 @keyframes pop{0%{transform:scale(1)}40%{transform:scale(1.03)}100%{transform:scale(1)}}
 
-/* ---- Empty ---- */
 .empty{text-align:center;padding:50px 20px;color:var(--sub)}
 .empty .big{font-size:44px;margin-bottom:10px}
 .empty p{font-size:14px;font-weight:600;line-height:1.7}
 
-/* ---- FAB ---- */
 .fab{position:fixed;bottom:calc(96px + var(--safe-b));right:calc(50% - 250px);z-index:40;width:58px;height:58px;border-radius:20px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:grid;place-items:center;box-shadow:0 8px 24px rgba(108,92,231,.45);transition:transform .2s}
 .fab:active{transform:scale(.9) rotate(90deg)}
 @media(max-width:540px){.fab{right:22px}}
 
-/* ---- Tab bar ---- */
 .tabbar{position:fixed;bottom:0;left:0;right:0;z-index:30;background:var(--card);border-top:1px solid var(--line);display:flex;padding:8px 0 var(--safe-b);max-width:520px;margin:0 auto;backdrop-filter:blur(10px)}
 .tab{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;color:var(--sub);transition:color .2s;font-size:10px;font-weight:700}
 .tab svg{width:24px;height:24px;transition:transform .2s}
 .tab.on{color:var(--accent)}
 .tab.on svg{transform:translateY(-2px)}
 
-/* ---- Stats ---- */
 .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 4px 16px}
 .stat-card{background:var(--card);border-radius:18px;padding:16px;box-shadow:var(--shadow)}
 .stat-card .v{font-size:28px;font-weight:800;line-height:1}
 .stat-card .l{font-size:12px;color:var(--sub);font-weight:700;margin-top:6px}
 .stat-card .v small{font-size:14px;color:var(--sub);font-weight:700}
-.cal{background:var(--card);border-radius:20px;padding:16px;box-shadow:var(--shadow);margin:0 4px}
+
+.panel{background:var(--card);border-radius:20px;padding:16px;box-shadow:var(--shadow);margin:0 4px 16px}
+.panel > .ph{font-size:15px;font-weight:800;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between}
+
+/* level */
+.lv-top{display:flex;align-items:center;gap:14px;margin-bottom:12px}
+.lv-badge{width:56px;height:56px;border-radius:18px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;display:grid;place-items:center;font-size:22px;font-weight:800;flex:none;box-shadow:0 6px 16px rgba(108,92,231,.4)}
+.lv-info{flex:1}
+.lv-info .lvl{font-size:17px;font-weight:800}
+.lv-info .xp{font-size:12px;color:var(--sub);font-weight:700;margin-top:2px}
+.xpbar{height:9px;border-radius:6px;background:var(--line);margin-top:8px;overflow:hidden}
+.xpbar i{display:block;height:100%;border-radius:6px;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .6s}
+
+/* badges */
+.badge-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.badge{display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center}
+.badge .bi{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;font-size:24px;background:var(--card2);filter:grayscale(1);opacity:.4;transition:.3s;border:2px solid var(--line)}
+.badge.earned .bi{filter:none;opacity:1;background:linear-gradient(135deg,#fff5d6,#ffe9a8);border-color:var(--gold);box-shadow:0 4px 12px rgba(255,180,0,.3)}
+:root[data-theme="dark"] .badge.earned .bi{background:linear-gradient(135deg,#4a3d1a,#5c4a1e)}
+.badge .bl{font-size:10px;font-weight:700;color:var(--sub);line-height:1.3}
+.badge.earned .bl{color:var(--text)}
+
+/* weekly bar */
+.week{display:flex;align-items:flex-end;gap:8px;height:110px;padding-top:8px}
+.wcol{flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;height:100%;justify-content:flex-end}
+.wbar{width:100%;max-width:26px;border-radius:8px 8px 4px 4px;background:linear-gradient(180deg,var(--accent),var(--accent2));min-height:4px;transition:height .5s;position:relative}
+.wbar.z{background:var(--line)}
+.wlab{font-size:11px;color:var(--sub);font-weight:700}
+.wval{font-size:10px;color:var(--sub);font-weight:700}
+
+.cal{background:var(--card);border-radius:20px;padding:16px;box-shadow:var(--shadow);margin:0 4px 16px}
 .cal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
 .cal-head b{font-size:16px;font-weight:800}
 .cal-nav{display:flex;gap:6px}
@@ -116,7 +139,6 @@ header{padding:calc(16px + var(--safe-t)) 20px 8px;display:flex;align-items:cent
 .cell.pad{visibility:hidden}
 .cell.today{outline:2px solid var(--accent);outline-offset:-2px}
 .cell .dot{position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%}
-.per-item{margin-top:16px}
 .per-row{background:var(--card);border-radius:14px;padding:12px 14px;display:flex;align-items:center;gap:12px;margin-bottom:8px;box-shadow:var(--shadow)}
 .per-row .em{width:38px;height:38px;border-radius:11px;display:grid;place-items:center;font-size:19px;flex:none}
 .per-row .info{flex:1;min-width:0}
@@ -125,10 +147,28 @@ header{padding:calc(16px + var(--safe-t)) 20px 8px;display:flex;align-items:cent
 .bar i{display:block;height:100%;border-radius:5px;transition:width .6s}
 .per-row .pc{font-size:13px;font-weight:800;flex:none}
 
-/* ---- Modal ---- */
+/* settings */
+.set-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
+.set-row:last-child{border-bottom:none}
+.set-row .si{width:38px;height:38px;border-radius:11px;background:var(--card2);display:grid;place-items:center;flex:none;color:var(--accent)}
+.set-row .st{flex:1;min-width:0}
+.set-row .st .t{font-size:15px;font-weight:700}
+.set-row .st .d{font-size:12px;color:var(--sub);font-weight:600;margin-top:2px}
+.switch{width:52px;height:30px;border-radius:16px;background:var(--line);position:relative;transition:.25s;flex:none}
+.switch.on{background:var(--good)}
+.switch::after{content:"";position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;background:#fff;transition:.25s;box-shadow:0 2px 5px rgba(0,0,0,.2)}
+.switch.on::after{left:25px}
+.mini-btn{padding:8px 14px;border-radius:11px;background:var(--card2);font-size:13px;font-weight:700;color:var(--text);flex:none}
+.mini-btn.danger{color:var(--warn)}
+.time-in{padding:8px 12px;border-radius:11px;border:2px solid var(--line);background:var(--card2);font-size:15px;font-weight:700;color:var(--text)}
+.theme-seg{display:flex;background:var(--card2);border-radius:12px;padding:3px;gap:3px}
+.theme-seg button{padding:7px 12px;border-radius:9px;font-size:13px;font-weight:700;color:var(--sub)}
+.theme-seg button.on{background:var(--card);color:var(--text);box-shadow:var(--shadow)}
+
+/* modal / sheet */
 .mask{position:fixed;inset:0;background:rgba(10,12,24,.5);z-index:50;opacity:0;pointer-events:none;transition:.3s;backdrop-filter:blur(3px)}
 .mask.open{opacity:1;pointer-events:auto}
-.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--card);border-radius:26px 26px 0 0;padding:8px 20px calc(24px + var(--safe-b));max-width:520px;margin:0 auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.3,.8,.4,1);max-height:90vh;overflow-y:auto}
+.sheet{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--card);border-radius:26px 26px 0 0;padding:8px 20px calc(24px + var(--safe-b));max-width:520px;margin:0 auto;transform:translateY(100%);transition:transform .35s cubic-bezier(.3,.8,.4,1);max-height:92vh;overflow-y:auto}
 .sheet.open{transform:none}
 .grab{width:40px;height:5px;border-radius:3px;background:var(--line);margin:8px auto 16px}
 .sheet h3{font-size:20px;font-weight:800;margin-bottom:18px}
@@ -149,15 +189,28 @@ header{padding:calc(16px + var(--safe-t)) 20px 8px;display:flex;align-items:cent
 .dows{display:flex;gap:6px}
 .dows button{flex:1;aspect-ratio:1;border-radius:12px;background:var(--card2);font-size:13px;font-weight:700;color:var(--sub);transition:.15s}
 .dows button.on{background:var(--accent);color:#fff}
+.stepper{display:flex;align-items:center;gap:14px;background:var(--card2);border-radius:14px;padding:8px 14px;width:fit-content}
+.stepper button{width:34px;height:34px;border-radius:10px;background:var(--card);font-size:20px;font-weight:800;color:var(--accent);display:grid;place-items:center;box-shadow:var(--shadow)}
+.stepper .sv{font-size:17px;font-weight:800;min-width:56px;text-align:center}
 .save-btn{width:100%;padding:16px;border-radius:16px;background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;font-size:16px;font-weight:800;box-shadow:0 6px 18px rgba(108,92,231,.4);transition:transform .15s;margin-top:6px}
 .save-btn:active{transform:scale(.97)}
 .del-btn{width:100%;padding:14px;border-radius:14px;color:var(--warn);font-size:15px;font-weight:700;margin-top:10px}
 input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var(--line);background:var(--card2);font-size:16px;color:var(--text);font-weight:600}
 
-/* toast */
-.toast{position:fixed;bottom:calc(100px + var(--safe-b));left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:12px 22px;border-radius:16px;font-size:14px;font-weight:700;z-index:80;opacity:0;pointer-events:none;transition:.3s;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.25)}
+.toast{position:fixed;bottom:calc(100px + var(--safe-b));left:50%;transform:translateX(-50%) translateY(20px);background:var(--text);color:var(--bg);padding:12px 22px;border-radius:16px;font-size:14px;font-weight:700;z-index:80;opacity:0;pointer-events:none;transition:.3s;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.25);max-width:90vw;text-align:center}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .confetti{position:fixed;width:10px;height:10px;z-index:70;pointer-events:none;border-radius:2px}
+
+/* badge popup */
+.bpop{position:fixed;inset:0;z-index:75;display:grid;place-items:center;background:rgba(10,12,24,.6);opacity:0;pointer-events:none;transition:.3s;backdrop-filter:blur(4px)}
+.bpop.show{opacity:1;pointer-events:auto}
+.bpop-card{background:var(--card);border-radius:24px;padding:30px 34px;text-align:center;transform:scale(.8);transition:.4s cubic-bezier(.3,1.4,.5,1);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.bpop.show .bpop-card{transform:scale(1)}
+.bpop-card .ic{font-size:60px;margin-bottom:10px;animation:spin 1s}
+@keyframes spin{from{transform:rotate(-20deg) scale(.5)}to{transform:none}}
+.bpop-card .t1{font-size:13px;font-weight:800;color:var(--gold);letter-spacing:1px}
+.bpop-card .t2{font-size:20px;font-weight:800;margin:6px 0 2px}
+.bpop-card .t3{font-size:13px;color:var(--sub);font-weight:600}
 </style>
 </head>
 <body>
@@ -190,7 +243,25 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
 
   <!-- 統計 -->
   <section class="screen" id="s-stats">
+    <div class="panel">
+      <div class="lv-top">
+        <div class="lv-badge" id="lvBadge">1</div>
+        <div class="lv-info">
+          <div class="lvl" id="lvText">レベル 1</div>
+          <div class="xp" id="xpText">0 / 100 XP</div>
+          <div class="xpbar"><i id="xpBar" style="width:0%"></i></div>
+        </div>
+      </div>
+    </div>
     <div class="stat-grid" id="statGrid"></div>
+    <div class="panel">
+      <div class="ph">この7日間</div>
+      <div class="week" id="weekChart"></div>
+    </div>
+    <div class="panel">
+      <div class="ph">実績バッジ <span id="badgeCnt" style="font-size:12px;color:var(--sub)"></span></div>
+      <div class="badge-grid" id="badgeGrid"></div>
+    </div>
     <div class="cal">
       <div class="cal-head">
         <b id="calLabel"></b>
@@ -202,7 +273,64 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
       <div class="dow"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
       <div class="grid" id="calGrid"></div>
     </div>
-    <div class="per-item" id="perItem"></div>
+    <div id="perItem"></div>
+  </section>
+
+  <!-- 設定 -->
+  <section class="screen" id="s-set">
+    <div class="panel">
+      <div class="ph">通知リマインド</div>
+      <div class="set-row">
+        <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
+        <div class="st"><div class="t">毎日のリマインド</div><div class="d">未完了があれば通知します</div></div>
+        <div class="switch" id="remSwitch"></div>
+      </div>
+      <div class="set-row" id="remTimeRow" style="display:none">
+        <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+        <div class="st"><div class="t">通知する時刻</div><div class="d">この時刻に未完了を確認</div></div>
+        <input type="time" class="time-in" id="remTime" value="20:00">
+      </div>
+      <div class="set-row" id="remTestRow" style="display:none">
+        <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
+        <div class="st"><div class="t">テスト通知を送る</div><div class="d">通知が届くか試せます</div></div>
+        <button class="mini-btn" id="remTest">送信</button>
+      </div>
+      <div class="set-row"><div class="st"><div class="d" id="remNote" style="margin:0">iPhoneは「ホーム画面に追加」した状態＋iOS16.4以降で通知が使えます。アプリを開いた時にも未完了があればお知らせします。</div></div></div>
+    </div>
+
+    <div class="panel">
+      <div class="ph">表示</div>
+      <div class="set-row">
+        <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg></div>
+        <div class="st"><div class="t">テーマ</div><div class="d">見た目の切り替え</div></div>
+        <div class="theme-seg" id="themeSeg">
+          <button data-t="light">ライト</button>
+          <button data-t="dark">ダーク</button>
+          <button data-t="auto">自動</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="ph">データ</div>
+      <div class="set-row">
+        <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg></div>
+        <div class="st"><div class="t">バックアップを保存</div><div class="d">データをファイルに書き出し</div></div>
+        <button class="mini-btn" id="exportBtn">保存</button>
+      </div>
+      <div class="set-row">
+        <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg></div>
+        <div class="st"><div class="t">バックアップから復元</div><div class="d">保存したファイルを読み込み</div></div>
+        <button class="mini-btn" id="importBtn">読込</button>
+        <input type="file" id="importFile" accept="application/json" style="display:none">
+      </div>
+      <div class="set-row">
+        <div class="si" style="color:var(--warn)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
+        <div class="st"><div class="t">すべてリセット</div><div class="d">習慣・記録を全部消します</div></div>
+        <button class="mini-btn danger" id="resetBtn">リセット</button>
+      </div>
+    </div>
+    <div style="text-align:center;color:var(--sub);font-size:12px;font-weight:600;padding:8px 0 4px">コツコツ v2 — 習慣＆タスク管理</div>
   </section>
 </div>
 
@@ -218,6 +346,10 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
   <button class="tab" data-tab="stats">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8"/><rect x="12" y="6" width="3" height="12"/><rect x="17" y="13" width="3" height="5"/></svg>
     統計
+  </button>
+  <button class="tab" data-tab="set">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+    設定
   </button>
 </nav>
 
@@ -249,6 +381,14 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
     <label>くり返す曜日</label>
     <div class="dows" id="dowPick"></div>
   </div>
+  <div class="field" id="targetField">
+    <label>1日の目標回数</label>
+    <div class="stepper">
+      <button id="tgtMinus">−</button>
+      <span class="sv" id="tgtVal">1回</span>
+      <button id="tgtPlus">＋</button>
+    </div>
+  </div>
   <div class="field" id="dueField" style="display:none">
     <label>期限（任意）</label>
     <input type="date" id="dueIn">
@@ -258,68 +398,119 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
 </div>
 
 <div class="toast" id="toast"></div>
+<div class="bpop" id="bpop"><div class="bpop-card"><div class="ic" id="bpopIc">🏅</div><div class="t1">実績を解除！</div><div class="t2" id="bpopName"></div><div class="t3" id="bpopDesc"></div></div></div>
 
 <script>
 const $=s=>document.querySelector(s), $$=s=>document.querySelectorAll(s);
 const EMOJIS=["💧","🏃","📚","🧘","🥗","💪","😴","🦷","🧹","✍️","🎯","☀️","💊","🚭","🧠","🎸"];
 const COLORS=["#6C5CE7","#00c896","#ff7675","#ffb400","#0984e3","#e84393","#00b894","#636e72"];
 const DOW=["日","月","火","水","木","金","土"];
-const todayStr=()=>{const d=new Date();return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
 const dstr=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const todayStr=()=>dstr(new Date());
+
+const BADGES=[
+  {id:"first",ic:"🌱",name:"はじめの一歩",desc:"最初のひとつを完了",cond:s=>s.totalDone>=1},
+  {id:"s3",ic:"🔥",name:"三日坊主卒業",desc:"3日連続で継続",cond:s=>s.maxStreak>=3},
+  {id:"s7",ic:"⭐",name:"1週間つづいた",desc:"7日連続で継続",cond:s=>s.maxStreak>=7},
+  {id:"s21",ic:"💎",name:"習慣化マスター",desc:"21日連続で継続",cond:s=>s.maxStreak>=21},
+  {id:"s30",ic:"👑",name:"1ヶ月の王者",desc:"30日連続で継続",cond:s=>s.maxStreak>=30},
+  {id:"perfect",ic:"🎯",name:"パーフェクト",desc:"1日の習慣を全部達成",cond:s=>s.perfectDays>=1},
+  {id:"perfect7",ic:"🏆",name:"完璧な1週間",desc:"7日ぶんの全達成日",cond:s=>s.perfectDays>=7},
+  {id:"c10",ic:"🎖️",name:"10回達成",desc:"累計10回完了",cond:s=>s.totalDone>=10},
+  {id:"c50",ic:"🥈",name:"50回達成",desc:"累計50回完了",cond:s=>s.totalDone>=50},
+  {id:"c100",ic:"🥇",name:"100回達成",desc:"累計100回完了",cond:s=>s.totalDone>=100},
+  {id:"lv5",ic:"🚀",name:"レベル5",desc:"レベル5に到達",cond:s=>s.level>=5},
+  {id:"night",ic:"🌙",name:"継続の証",desc:"5種類以上の習慣を登録",cond:s=>s.habitTypes>=5},
+];
 
 let state=load();
-function load(){try{return JSON.parse(localStorage.getItem("kotsu_v1"))||{items:[],theme:null}}catch(e){return{items:[],theme:null}}}
+function load(){
+  let s;try{s=JSON.parse(localStorage.getItem("kotsu_v1"))}catch(e){}
+  s=s||{};
+  s.items=s.items||[];
+  s.theme=s.theme||null;              // null=auto
+  s.reminder=s.reminder||{enabled:false,time:"20:00",lastNotified:""};
+  s.badges=s.badges||[];
+  // migrate: ensure target/order
+  s.items.forEach((it,i)=>{if(it.target==null)it.target=1;if(it.order==null)it.order=i;it.done=it.done||{};});
+  return s;
+}
 function save(){localStorage.setItem("kotsu_v1",JSON.stringify(state))}
 
-/* theme */
-function applyTheme(){
-  const t=state.theme|| (matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
-  document.documentElement.setAttribute("data-theme",t);
-  $("#themeBtn").innerHTML = t==="dark"
-    ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'
-    : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+/* completion helpers (done[ds] holds a count for habits; tasks use __done) */
+function cnt(it,ds){const v=it.done&&it.done[ds];return v===true?1:(v||0)}
+function isDone(it,ds){
+  if(it.type==="task")return !!(it.done&&it.done.__done);
+  return cnt(it,ds)>=(it.target||1);
 }
-$("#themeBtn").onclick=()=>{const cur=document.documentElement.getAttribute("data-theme");state.theme=cur==="dark"?"light":"dark";save();applyTheme();};
-
-/* scheduled today? */
-function scheduledToday(it,dateStr){
-  const d=dateStr?new Date(dateStr+"T00:00:00"):new Date();
-  if(it.type==="task") return !it.done || Object.keys(it.done).length===0 ? true : (it.due? it.due>=dstr(d):false);
+function scheduledToday(it,ds){
+  const d=ds?new Date(ds+"T00:00:00"):new Date();
+  if(it.type==="task")return !(it.done&&it.done.__done);
   const dow=d.getDay();
   return it.repeat==="daily"||(Array.isArray(it.repeat)&&it.repeat.includes(dow));
 }
-function isDone(it,ds){return it.done&&it.done[ds]}
-
-/* streak for habit */
 function streak(it){
   if(it.type!=="habit")return 0;
   let s=0;const d=new Date();
   for(let i=0;i<400;i++){
-    const ds=dstr(d);const dow=d.getDay();
+    const ds=dstr(d),dow=d.getDay();
     const sched=it.repeat==="daily"||(Array.isArray(it.repeat)&&it.repeat.includes(dow));
     if(sched){
       if(isDone(it,ds))s++;
-      else if(ds!==todayStr())break; // today not done yet -> don't break
-      else if(ds===todayStr()){} // allow today pending
+      else if(ds!==todayStr())break;
     }
     d.setDate(d.getDate()-1);
   }
   return s;
 }
 
-/* ---- render today ---- */
+/* ---------- aggregate stats ---------- */
+function aggregate(){
+  const habits=state.items.filter(it=>it.type==="habit");
+  let totalDone=0,maxStreak=0;
+  habits.forEach(it=>{maxStreak=Math.max(maxStreak,streak(it));
+    Object.keys(it.done||{}).forEach(k=>{if(k!=="__done"&&isDone(it,k))totalDone++;});});
+  state.items.filter(it=>it.type==="task").forEach(it=>{if(it.done&&it.done.__done)totalDone++;});
+  // perfect days (last 60d)
+  let perfectDays=0;const d=new Date();
+  for(let i=0;i<60;i++){const ds=dstr(d);
+    const sch=habits.filter(it=>scheduledToday(it,ds));
+    if(sch.length&&sch.every(it=>isDone(it,ds)))perfectDays++;
+    d.setDate(d.getDate()-1);}
+  const xp=totalDone*10;
+  const li=levelInfo(xp);
+  return {totalDone,maxStreak,perfectDays,xp,level:li.level,li,habitTypes:habits.length,habits};
+}
+function levelInfo(xp){
+  let L=1;while(50*L*(L+1)<=xp)L++;
+  const cur=50*(L-1)*L,next=50*L*(L+1);
+  return {level:L,cur,next,into:xp-cur,need:next-cur,pct:Math.round((xp-cur)/(next-cur)*100)};
+}
+
+/* ---------- theme ---------- */
+function applyTheme(){
+  const t=state.theme||(matchMedia("(prefers-color-scheme:dark)").matches?"dark":"light");
+  document.documentElement.setAttribute("data-theme",t);
+  $("#themeBtn").innerHTML=t==="dark"
+    ? '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>'
+    : '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>';
+  $$("#themeSeg button").forEach(b=>b.classList.toggle("on",b.dataset.t===(state.theme||"auto")));
+}
+$("#themeBtn").onclick=()=>{const cur=document.documentElement.getAttribute("data-theme");state.theme=cur==="dark"?"light":"dark";save();applyTheme();};
+$("#themeSeg").onclick=e=>{const b=e.target.closest("[data-t]");if(!b)return;state.theme=b.dataset.t==="auto"?null:b.dataset.t;save();applyTheme();};
+
+/* ---------- today ---------- */
+function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
+function sortItems(a,b){return (a.order||0)-(b.order||0)}
 function renderToday(){
   const ds=todayStr();
-  const habits=state.items.filter(it=>it.type==="habit"&&scheduledToday(it));
-  const tasks=state.items.filter(it=>it.type==="task"&&!(it.done&&it.done.__done));
+  const habits=state.items.filter(it=>it.type==="habit"&&scheduledToday(it,ds)).sort(sortItems);
+  const tasks=state.items.filter(it=>it.type==="task"&&!(it.done&&it.done.__done)).sort(sortItems);
   const all=[...habits,...tasks];
-  const doneCount=habits.filter(it=>isDone(it,ds)).length + tasks.filter(it=>it.done&&it.done.__done).length;
+  const doneCount=habits.filter(it=>isDone(it,ds)).length;
   const total=all.length;
   const pct=total?Math.round(doneCount/total*100):0;
-
-  // ring
-  const off=201-201*pct/100;
-  $("#ringFg").style.strokeDashoffset=off;
+  $("#ringFg").style.strokeDashoffset=201-201*pct/100;
   $("#ringPct").textContent=pct+"%";
   if(total===0){$("#sumTitle").textContent="はじめよう";$("#sumSub").textContent="右下の＋で習慣を追加";}
   else if(pct===100){$("#sumTitle").textContent="全部達成！お見事 🎉";$("#sumSub").textContent="この調子でつづけよう";}
@@ -330,228 +521,307 @@ function renderToday(){
   let html="";
   if(habits.length){
     html+=`<div class="sec-head"><h3>習慣</h3><span class="cnt">${habits.filter(it=>isDone(it,ds)).length}/${habits.length}</span></div><div class="list">`;
-    habits.forEach(it=>html+=itemCard(it,isDone(it,ds)));
-    html+=`</div>`;
+    habits.forEach(it=>html+=itemCard(it,ds));html+=`</div>`;
   }
   if(tasks.length){
-    html+=`<div class="sec-head"><h3>タスク</h3><span class="cnt">${tasks.filter(it=>it.done&&it.done.__done).length}/${tasks.length}</span></div><div class="list">`;
-    tasks.forEach(it=>html+=itemCard(it,it.done&&it.done.__done));
-    html+=`</div>`;
+    html+=`<div class="sec-head"><h3>タスク</h3><span class="cnt">${tasks.filter(it=>isDone(it,ds)).length}/${tasks.length}</span></div><div class="list">`;
+    tasks.forEach(it=>html+=itemCard(it,ds));html+=`</div>`;
   }
   c.innerHTML=html;
 }
-function itemCard(it,done){
-  const st=streak(it);
+function itemCard(it,ds){
+  const done=isDone(it,ds),st=streak(it),tgt=it.target||1,c=cnt(it,ds);
   let meta="";
   if(it.type==="habit"){
-    meta=it.repeat==="daily"?"毎日":it.repeat.map(d=>DOW[d]).join("・");
-    if(st>0)meta=`<span class="streak">🔥${st}日</span> <span class="chip">${meta}</span>`;
-    else meta=`<span class="chip">${meta}</span>`;
+    let rep=it.repeat==="daily"?"毎日":it.repeat.map(d=>DOW[d]).join("・");
+    if(tgt>1)rep+=` ${c}/${tgt}回`;
+    meta=st>0?`<span class="streak">🔥${st}日</span> <span class="chip">${rep}</span>`:`<span class="chip">${rep}</span>`;
   }else{
-    meta = it.due?`<span class="chip">📅 ${it.due.slice(5).replace("-","/")}</span>`:`<span class="chip">タスク</span>`;
+    meta=it.due?`<span class="chip">📅 ${it.due.slice(5).replace("-","/")}</span>`:`<span class="chip">タスク</span>`;
   }
+  const checkInner=(it.type==="habit"&&tgt>1&&!done)
+    ? `<span class="num">${c}</span>`
+    : `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg>`;
   return `<div class="item ${done?"done":""}" data-id="${it.id}">
     <div class="em" style="background:${it.color}22;color:${it.color}">${it.emoji}</div>
     <div class="item-body"><div class="nm">${esc(it.name)}</div><div class="meta">${meta}</div></div>
-    <button class="check" data-check="${it.id}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></button>
+    <button class="check" data-check="${it.id}">${checkInner}</button>
   </div>`;
 }
-function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 
-/* toggle done */
 document.addEventListener("click",e=>{
   const chk=e.target.closest("[data-check]");
   if(chk){
     e.stopPropagation();
     const it=state.items.find(x=>x.id===chk.dataset.check);
-    const ds=todayStr();
-    it.done=it.done||{};
-    let nowDone;
-    if(it.type==="task"){nowDone=!it.done.__done;it.done.__done=nowDone;if(nowDone)it.done[ds]=true;}
-    else{nowDone=!it.done[ds];if(nowDone)it.done[ds]=true;else delete it.done[ds];}
+    const ds=todayStr();it.done=it.done||{};
+    const tgt=it.target||1;let nowDone;
+    if(it.type==="task"){nowDone=!it.done.__done;it.done.__done=nowDone;if(nowDone)it.done[ds]=1;}
+    else if(tgt>1){let c=cnt(it,ds)+1;if(c>tgt)c=0;if(c===0)delete it.done[ds];else it.done[ds]=c;nowDone=c>=tgt;}
+    else{nowDone=!isDone(it,ds);if(nowDone)it.done[ds]=1;else delete it.done[ds];}
     save();
     const card=chk.closest(".item");
     if(nowDone){card.classList.add("pop");burst(chk);}
-    renderToday();
-    // 100% celebration
-    setTimeout(()=>{const p=$("#ringPct").textContent;if(p==="100%"&&nowDone)celebrate();},50);
+    renderToday();checkBadges();
+    setTimeout(()=>{if($("#ringPct").textContent==="100%"&&nowDone)celebrate();},60);
     return;
   }
   const card=e.target.closest(".item");
-  if(card&&card.dataset.id){openEdit(card.dataset.id);}
+  if(card&&card.dataset.id)openEdit(card.dataset.id);
 });
 
-/* ---- Stats ---- */
+/* ---------- stats ---------- */
 let calCursor=new Date();
 function renderStats(){
-  const habits=state.items.filter(it=>it.type==="habit");
-  // 総ストリーク最大
-  let maxStreak=0,totalDone=0;
-  habits.forEach(it=>{maxStreak=Math.max(maxStreak,streak(it));totalDone+=Object.keys(it.done||{}).filter(k=>k!=="__done").length;});
-  state.items.filter(it=>it.type==="task").forEach(it=>{if(it.done&&it.done.__done)totalDone++;});
-  // 今日の達成率
+  const A=aggregate();
+  // level
+  $("#lvBadge").textContent=A.level;
+  $("#lvText").textContent="レベル "+A.level;
+  $("#xpText").textContent=`${A.li.into} / ${A.li.need} XP（次のレベルまで）`;
+  $("#xpBar").style.width=A.li.pct+"%";
+  // today & week
   const ds=todayStr();
-  const todayHabits=habits.filter(it=>scheduledToday(it));
+  const todayHabits=A.habits.filter(it=>scheduledToday(it,ds));
   const todayPct=todayHabits.length?Math.round(todayHabits.filter(it=>isDone(it,ds)).length/todayHabits.length*100):0;
-  // 7日達成率
   let sch=0,dn=0;
-  for(let i=0;i<7;i++){const d=new Date();d.setDate(d.getDate()-i);const dd=dstr(d);
-    habits.forEach(it=>{if(scheduledToday(it,dd)){sch++;if(isDone(it,dd))dn++;}});}
-  const week=sch?Math.round(dn/sch*100):0;
+  const week=[];
+  for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const dd=dstr(d);
+    let s=0,c=0;A.habits.forEach(it=>{if(scheduledToday(it,dd)){s++;sch++;if(isDone(it,dd)){c++;dn++;}}});
+    week.push({dow:DOW[d.getDay()],pct:s?Math.round(c/s*100):0,has:s>0,today:dd===todayStr()});}
+  const week7=sch?Math.round(dn/sch*100):0;
 
   $("#statGrid").innerHTML=`
-    <div class="stat-card"><div class="v">🔥${maxStreak}<small> 日</small></div><div class="l">最長ストリーク</div></div>
+    <div class="stat-card"><div class="v">🔥${A.maxStreak}<small> 日</small></div><div class="l">最長ストリーク</div></div>
     <div class="stat-card"><div class="v">${todayPct}<small>%</small></div><div class="l">今日の達成率</div></div>
-    <div class="stat-card"><div class="v">${week}<small>%</small></div><div class="l">直近7日の達成率</div></div>
-    <div class="stat-card"><div class="v">${totalDone}<small> 回</small></div><div class="l">これまでの完了数</div></div>`;
+    <div class="stat-card"><div class="v">${week7}<small>%</small></div><div class="l">直近7日の達成率</div></div>
+    <div class="stat-card"><div class="v">${A.totalDone}<small> 回</small></div><div class="l">これまでの完了数</div></div>`;
+
+  // week chart
+  $("#weekChart").innerHTML=week.map(w=>`
+    <div class="wcol">
+      <div class="wval">${w.has?w.pct+"%":"-"}</div>
+      <div class="wbar ${w.pct===0?"z":""}" style="height:${w.has?Math.max(w.pct,4):4}%;${w.today?"outline:2px solid var(--gold);outline-offset:1px":""}"></div>
+      <div class="wlab">${w.dow}</div>
+    </div>`).join("");
+
+  // badges
+  const earned=new Set(state.badges);
+  $("#badgeCnt").textContent=`${earned.size}/${BADGES.length}`;
+  $("#badgeGrid").innerHTML=BADGES.map(b=>`
+    <div class="badge ${earned.has(b.id)?"earned":""}"><div class="bi">${b.ic}</div><div class="bl">${b.name}</div></div>`).join("");
 
   // calendar
   const y=calCursor.getFullYear(),m=calCursor.getMonth();
   $("#calLabel").textContent=`${y}年 ${m+1}月`;
-  const first=new Date(y,m,1).getDay();
-  const days=new Date(y,m+1,0).getDate();
-  let g="";
-  for(let i=0;i<first;i++)g+=`<div class="cell pad"></div>`;
+  const first=new Date(y,m,1).getDay(),days=new Date(y,m+1,0).getDate();
+  let g="";for(let i=0;i<first;i++)g+=`<div class="cell pad"></div>`;
   for(let day=1;day<=days;day++){
     const dd=`${y}-${String(m+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-    let sc=0,done=0;
-    habits.forEach(it=>{if(scheduledToday(it,dd)){sc++;if(isDone(it,dd))done++;}});
-    const isToday=dd===todayStr();
-    let dot="";
-    if(sc>0){const r=done/sc;const col=r===1?"var(--good)":r>0?"var(--gold)":"var(--line)";dot=`<span class="dot" style="background:${col}"></span>`;}
+    let s=0,done=0;A.habits.forEach(it=>{if(scheduledToday(it,dd)){s++;if(isDone(it,dd))done++;}});
+    let dot="";if(s>0){const r=done/s;const col=r===1?"var(--good)":r>0?"var(--gold)":"var(--line)";dot=`<span class="dot" style="background:${col}"></span>`;}
     const future=dd>todayStr();
-    g+=`<div class="cell ${isToday?"today":""}" style="${future?'opacity:.35':''}">${day}${dot}</div>`;
+    g+=`<div class="cell ${dd===todayStr()?"today":""}" style="${future?'opacity:.35':''}">${day}${dot}</div>`;
   }
   $("#calGrid").innerHTML=g;
 
-  // per-habit 30日達成率
+  // per habit 30d
   let ph="";
-  habits.forEach(it=>{
-    let s=0,d=0;
-    for(let i=0;i<30;i++){const dt=new Date();dt.setDate(dt.getDate()-i);const dd=dstr(dt);if(scheduledToday(it,dd)){s++;if(isDone(it,dd))d++;}}
+  A.habits.forEach(it=>{let s=0,d=0;for(let i=0;i<30;i++){const dt=new Date();dt.setDate(dt.getDate()-i);const dd=dstr(dt);if(scheduledToday(it,dd)){s++;if(isDone(it,dd))d++;}}
     const pc=s?Math.round(d/s*100):0;
     ph+=`<div class="per-row"><div class="em" style="background:${it.color}22;color:${it.color}">${it.emoji}</div>
       <div class="info"><div class="nm">${esc(it.name)}</div><div class="bar"><i style="width:${pc}%;background:${it.color}"></i></div></div>
-      <div class="pc" style="color:${it.color}">${pc}%</div></div>`;
-  });
-  $("#perItem").innerHTML=habits.length?`<div class="sec-head"><h3>習慣別（直近30日）</h3></div>${ph}`:"";
+      <div class="pc" style="color:${it.color}">${pc}%</div></div>`;});
+  $("#perItem").innerHTML=A.habits.length?`<div class="sec-head"><h3>習慣別（直近30日）</h3></div>${ph}`:"";
 }
 $("#calPrev").onclick=()=>{calCursor.setMonth(calCursor.getMonth()-1);renderStats();};
 $("#calNext").onclick=()=>{calCursor.setMonth(calCursor.getMonth()+1);renderStats();};
 
-/* ---- tabs ---- */
+/* ---------- badges check ---------- */
+let badgeQueue=[];
+function checkBadges(){
+  const A=aggregate();
+  const earned=new Set(state.badges);
+  BADGES.forEach(b=>{if(!earned.has(b.id)&&b.cond(A)){state.badges.push(b.id);badgeQueue.push(b);}});
+  if(badgeQueue.length){save();showNextBadge();}
+}
+function showNextBadge(){
+  if(!badgeQueue.length)return;
+  const b=badgeQueue.shift();
+  $("#bpopIc").textContent=b.ic;$("#bpopName").textContent=b.name;$("#bpopDesc").textContent=b.desc;
+  $("#bpop").classList.add("show");
+  clearTimeout(showNextBadge._t);
+  showNextBadge._t=setTimeout(()=>{$("#bpop").classList.remove("show");if(badgeQueue.length)setTimeout(showNextBadge,400);},2200);
+}
+$("#bpop").onclick=()=>{$("#bpop").classList.remove("show");clearTimeout(showNextBadge._t);if(badgeQueue.length)setTimeout(showNextBadge,300);};
+
+/* ---------- tabs ---------- */
 $$(".tab").forEach(t=>t.onclick=()=>{
   $$(".tab").forEach(x=>x.classList.remove("on"));t.classList.add("on");
   const tab=t.dataset.tab;
   $$(".screen").forEach(s=>s.classList.remove("active"));
   $("#s-"+tab).classList.add("active");
-  $("#hTitle").textContent=tab==="today"?"今日":"統計";
+  $("#hTitle").textContent=tab==="today"?"今日":tab==="stats"?"統計":"設定";
   $("#fab").style.display=tab==="today"?"grid":"none";
-  if(tab==="stats")renderStats();else renderToday();
+  if(tab==="stats")renderStats();else if(tab==="today")renderToday();else renderSettings();
+  window.scrollTo(0,0);
 });
 
-/* ---- sheet ---- */
-let editing=null, sel={type:"habit",emoji:EMOJIS[0],color:COLORS[0],repeat:"daily",dows:[0,1,2,3,4,5,6]};
+/* ---------- sheet ---------- */
+let editing=null,sel={type:"habit",emoji:EMOJIS[0],color:COLORS[0],dows:[0,1,2,3,4,5,6],target:1};
 function buildPickers(){
-  $("#emojiPick").innerHTML=EMOJIS.map((e,i)=>`<button data-e="${e}" class="${e===sel.emoji?'on':''}">${e}</button>`).join("");
+  $("#emojiPick").innerHTML=EMOJIS.map(e=>`<button data-e="${e}" class="${e===sel.emoji?'on':''}">${e}</button>`).join("");
   $("#colorPick").innerHTML=COLORS.map(c=>`<button data-c="${c}" class="${c===sel.color?'on':''}" style="background:${c}"></button>`).join("");
   $("#dowPick").innerHTML=DOW.map((d,i)=>`<button data-d="${i}" class="${sel.dows.includes(i)?'on':''}">${d}</button>`).join("");
+  $("#tgtVal").textContent=sel.target+"回";
 }
-$("#emojiPick").onclick=e=>{const b=e.target.closest("[data-e]");if(!b)return;sel.emoji=b.dataset.e;buildPickers();};
-$("#colorPick").onclick=e=>{const b=e.target.closest("[data-c]");if(!b)return;sel.color=b.dataset.c;buildPickers();};
+$("#emojiPick").onclick=e=>{const b=e.target.closest("[data-e]");if(b){sel.emoji=b.dataset.e;buildPickers();}};
+$("#colorPick").onclick=e=>{const b=e.target.closest("[data-c]");if(b){sel.color=b.dataset.c;buildPickers();}};
 $("#dowPick").onclick=e=>{const b=e.target.closest("[data-d]");if(!b)return;const d=+b.dataset.d;
   if(sel.dows.includes(d))sel.dows=sel.dows.filter(x=>x!==d);else sel.dows.push(d);buildPickers();};
+$("#tgtMinus").onclick=()=>{if(sel.target>1)sel.target--;buildPickers();};
+$("#tgtPlus").onclick=()=>{if(sel.target<20)sel.target++;buildPickers();};
 $("#typeSeg").onclick=e=>{const b=e.target.closest("[data-type]");if(!b)return;
   sel.type=b.dataset.type;$$("#typeSeg button").forEach(x=>x.classList.toggle("on",x===b));
   $("#repeatField").style.display=sel.type==="habit"?"block":"none";
-  $("#dueField").style.display=sel.type==="task"?"block":"none";
-};
+  $("#targetField").style.display=sel.type==="habit"?"block":"none";
+  $("#dueField").style.display=sel.type==="task"?"block":"none";};
 function openSheet(){buildPickers();$("#mask").classList.add("open");$("#sheet").classList.add("open");}
 function closeSheet(){$("#mask").classList.remove("open");$("#sheet").classList.remove("open");}
 $("#mask").onclick=closeSheet;
 $("#fab").onclick=()=>{
-  editing=null;sel={type:"habit",emoji:EMOJIS[0],color:COLORS[0],repeat:"daily",dows:[0,1,2,3,4,5,6]};
+  editing=null;sel={type:"habit",emoji:EMOJIS[Math.floor(Math.random()*EMOJIS.length)],color:COLORS[Math.floor(Math.random()*COLORS.length)],dows:[0,1,2,3,4,5,6],target:1};
   $("#sheetTitle").textContent="新しい習慣";$("#nameIn").value="";$("#dueIn").value="";
   $$("#typeSeg button").forEach(x=>x.classList.toggle("on",x.dataset.type==="habit"));
-  $("#repeatField").style.display="block";$("#dueField").style.display="none";
-  $("#delBtn").style.display="none";
-  openSheet();
-};
+  $("#repeatField").style.display="block";$("#targetField").style.display="block";$("#dueField").style.display="none";
+  $("#delBtn").style.display="none";openSheet();};
 function openEdit(id){
   const it=state.items.find(x=>x.id===id);editing=id;
-  sel={type:it.type,emoji:it.emoji,color:it.color,repeat:it.repeat,dows:it.repeat==="daily"?[0,1,2,3,4,5,6]:(Array.isArray(it.repeat)?[...it.repeat]:[0,1,2,3,4,5,6])};
+  sel={type:it.type,emoji:it.emoji,color:it.color,target:it.target||1,
+    dows:it.repeat==="daily"?[0,1,2,3,4,5,6]:(Array.isArray(it.repeat)?[...it.repeat]:[0,1,2,3,4,5,6])};
   $("#sheetTitle").textContent="編集";$("#nameIn").value=it.name;$("#dueIn").value=it.due||"";
   $$("#typeSeg button").forEach(x=>x.classList.toggle("on",x.dataset.type===it.type));
   $("#repeatField").style.display=it.type==="habit"?"block":"none";
+  $("#targetField").style.display=it.type==="habit"?"block":"none";
   $("#dueField").style.display=it.type==="task"?"block":"none";
-  $("#delBtn").style.display="block";
-  openSheet();
-}
+  $("#delBtn").style.display="block";openSheet();}
 $("#saveBtn").onclick=()=>{
   const name=$("#nameIn").value.trim();
   if(!name){toast("名前を入力してね");$("#nameIn").focus();return;}
   let repeat="daily";
-  if(sel.type==="habit"){
-    if(sel.dows.length===0){toast("曜日を1つ以上選んでね");return;}
-    repeat=sel.dows.length===7?"daily":[...sel.dows].sort();
-  }
-  if(editing){
-    const it=state.items.find(x=>x.id===editing);
-    it.name=name;it.emoji=sel.emoji;it.color=sel.color;it.type=sel.type;it.repeat=repeat;it.due=$("#dueIn").value||null;
-  }else{
-    state.items.push({id:"i"+Date.now()+Math.random().toString(36).slice(2,6),name,emoji:sel.emoji,color:sel.color,type:sel.type,repeat,due:sel.type==="task"?($("#dueIn").value||null):null,done:{},createdAt:todayStr()});
-  }
-  save();closeSheet();renderToday();
-  toast(editing?"更新しました":"追加しました 🎉");
+  if(sel.type==="habit"){if(sel.dows.length===0){toast("曜日を1つ以上選んでね");return;}repeat=sel.dows.length===7?"daily":[...sel.dows].sort((a,b)=>a-b);}
+  if(editing){const it=state.items.find(x=>x.id===editing);
+    it.name=name;it.emoji=sel.emoji;it.color=sel.color;it.type=sel.type;it.repeat=repeat;it.target=sel.type==="habit"?sel.target:1;it.due=sel.type==="task"?($("#dueIn").value||null):null;}
+  else{state.items.push({id:"i"+Date.now()+Math.random().toString(36).slice(2,6),name,emoji:sel.emoji,color:sel.color,type:sel.type,repeat,target:sel.type==="habit"?sel.target:1,due:sel.type==="task"?($("#dueIn").value||null):null,done:{},order:state.items.length,createdAt:todayStr()});}
+  save();closeSheet();renderToday();checkBadges();toast(editing?"更新しました":"追加しました 🎉");};
+$("#delBtn").onclick=()=>{if(!editing)return;state.items=state.items.filter(x=>x.id!==editing);save();closeSheet();renderToday();toast("削除しました");};
+
+/* ---------- settings ---------- */
+function renderSettings(){
+  $("#remSwitch").classList.toggle("on",state.reminder.enabled);
+  $("#remTime").value=state.reminder.time||"20:00";
+  $("#remTimeRow").style.display=state.reminder.enabled?"flex":"none";
+  $("#remTestRow").style.display=state.reminder.enabled?"flex":"none";
+  $$("#themeSeg button").forEach(b=>b.classList.toggle("on",b.dataset.t===(state.theme||"auto")));
+}
+$("#remSwitch").onclick=async()=>{
+  if(!state.reminder.enabled){
+    if(!("Notification"in window)){toast("この端末は通知に未対応です");return;}
+    let perm=Notification.permission;
+    if(perm==="default")perm=await Notification.requestPermission();
+    if(perm!=="granted"){toast("通知が許可されませんでした");return;}
+    state.reminder.enabled=true;toast("リマインドをオンにしました");
+  }else{state.reminder.enabled=false;toast("リマインドをオフにしました");}
+  save();renderSettings();scheduleReminder();
 };
-$("#delBtn").onclick=()=>{
-  if(!editing)return;
-  state.items=state.items.filter(x=>x.id!==editing);
-  save();closeSheet();renderToday();toast("削除しました");
+$("#remTime").onchange=()=>{state.reminder.time=$("#remTime").value;save();scheduleReminder();toast("時刻を設定しました");};
+$("#remTest").onclick=()=>{notify("コツコツ",{body:"通知はこんな感じで届きます！"});};
+
+$("#exportBtn").onclick=()=>{
+  const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");
+  a.href=url;a.download="kotsu-backup-"+todayStr()+".json";document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1000);toast("バックアップを保存しました");
+};
+$("#importBtn").onclick=()=>$("#importFile").click();
+$("#importFile").onchange=e=>{
+  const f=e.target.files[0];if(!f)return;const r=new FileReader();
+  r.onload=()=>{try{const d=JSON.parse(r.result);if(!d||!Array.isArray(d.items))throw 0;
+    state=d;state.items.forEach((it,i)=>{if(it.target==null)it.target=1;if(it.order==null)it.order=i;it.done=it.done||{};});
+    state.reminder=state.reminder||{enabled:false,time:"20:00",lastNotified:""};state.badges=state.badges||[];
+    save();applyTheme();renderToday();renderSettings();toast("復元しました");
+  }catch(err){toast("ファイルを読み込めませんでした");}};
+  r.readAsText(f);e.target.value="";
+};
+$("#resetBtn").onclick=()=>{
+  if(confirm("すべての習慣・タスク・記録を消します。よろしいですか？")){
+    localStorage.removeItem("kotsu_v1");state=load();seedIfEmpty();applyTheme();renderToday();renderSettings();toast("リセットしました");
+  }
 };
 
-/* toast */
-let tt;
-function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),1800);}
+/* ---------- notifications ---------- */
+function notify(title,opts){
+  if(!("Notification"in window)||Notification.permission!=="granted"){toast("通知が許可されていません");return;}
+  opts=Object.assign({icon:"icon-192.png",badge:"icon-192.png"},opts);
+  if(navigator.serviceWorker&&navigator.serviceWorker.ready){
+    navigator.serviceWorker.ready.then(reg=>reg.showNotification(title,opts)).catch(()=>{try{new Notification(title,opts)}catch(e){}});
+  }else{try{new Notification(title,opts)}catch(e){}}
+}
+let remTimer=null;
+function pendingCount(){const ds=todayStr();return state.items.filter(it=>it.type==="habit"&&scheduledToday(it,ds)&&!isDone(it,ds)).length
+  + state.items.filter(it=>it.type==="task"&&!(it.done&&it.done.__done)).length;}
+function fireReminderIfDue(){
+  if(!state.reminder.enabled)return;
+  const now=new Date(),ds=todayStr();
+  const [h,m]=(state.reminder.time||"20:00").split(":").map(Number);
+  const due=now.getHours()>h||(now.getHours()===h&&now.getMinutes()>=m);
+  if(due&&state.reminder.lastNotified!==ds){
+    const p=pendingCount();
+    if(p>0){notify("コツコツ",{body:`今日はあと ${p} 件！わすれずにやろう 💪`,tag:"daily"});}
+    state.reminder.lastNotified=ds;save();
+  }
+}
+function scheduleReminder(){
+  if(remTimer){clearTimeout(remTimer);remTimer=null;}
+  if(!state.reminder.enabled)return;
+  fireReminderIfDue();
+  const now=new Date(),[h,m]=(state.reminder.time||"20:00").split(":").map(Number);
+  const t=new Date();t.setHours(h,m,0,0);if(t<=now)t.setDate(t.getDate()+1);
+  const ms=Math.min(t-now,6*60*60*1000); // cap 6h so long-open tabs still re-check
+  remTimer=setTimeout(()=>{fireReminderIfDue();scheduleReminder();},ms);
+}
 
-/* confetti micro */
-function burst(el){
-  const r=el.getBoundingClientRect();const cx=r.left+r.width/2,cy=r.top+r.height/2;
-  for(let i=0;i<8;i++){
-    const c=document.createElement("div");c.className="confetti";
-    c.style.background=COLORS[i%COLORS.length];c.style.left=cx+"px";c.style.top=cy+"px";
-    document.body.appendChild(c);
+/* ---------- misc ---------- */
+let tt;function toast(msg){const t=$("#toast");t.textContent=msg;t.classList.add("show");clearTimeout(tt);tt=setTimeout(()=>t.classList.remove("show"),1800);}
+function burst(el){const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.top+r.height/2;
+  for(let i=0;i<8;i++){const c=document.createElement("div");c.className="confetti";c.style.background=COLORS[i%COLORS.length];c.style.left=cx+"px";c.style.top=cy+"px";document.body.appendChild(c);
     const ang=Math.random()*Math.PI*2,dist=30+Math.random()*40;
-    c.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${Math.cos(ang)*dist}px,${Math.sin(ang)*dist}px) scale(0)`,opacity:0}],{duration:600,easing:"cubic-bezier(.2,.7,.3,1)"}).onfinish=()=>c.remove();
-  }
-}
-function celebrate(){
-  for(let i=0;i<40;i++){
-    const c=document.createElement("div");c.className="confetti";
-    c.style.background=COLORS[i%COLORS.length];c.style.left=Math.random()*100+"vw";c.style.top="-20px";
-    document.body.appendChild(c);
-    c.animate([{transform:`translateY(0) rotate(0)`,opacity:1},{transform:`translateY(110vh) rotate(${Math.random()*720}deg)`,opacity:1}],{duration:1800+Math.random()*1200,easing:"cubic-bezier(.3,.6,.5,1)"}).onfinish=()=>c.remove();
-  }
-  toast("今日のノルマ達成！ 🎉");
-}
-
-/* date header */
+    c.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${Math.cos(ang)*dist}px,${Math.sin(ang)*dist}px) scale(0)`,opacity:0}],{duration:600,easing:"cubic-bezier(.2,.7,.3,1)"}).onfinish=()=>c.remove();}}
+function celebrate(){for(let i=0;i<44;i++){const c=document.createElement("div");c.className="confetti";c.style.background=COLORS[i%COLORS.length];c.style.left=Math.random()*100+"vw";c.style.top="-20px";document.body.appendChild(c);
+  c.animate([{transform:"translateY(0) rotate(0)",opacity:1},{transform:`translateY(110vh) rotate(${Math.random()*720}deg)`,opacity:1}],{duration:1800+Math.random()*1200,easing:"cubic-bezier(.3,.6,.5,1)"}).onfinish=()=>c.remove();}
+  toast("今日のノルマ達成！ 🎉");}
 function setDate(){const d=new Date();$("#hDate").textContent=`${d.getMonth()+1}月${d.getDate()}日 (${DOW[d.getDay()]})`;}
 
-/* seed sample on first launch */
-if(!localStorage.getItem("kotsu_v1")){
-  state.items=[
-    {id:"seed1",name:"水を飲む",emoji:"💧",color:COLORS[4],type:"habit",repeat:"daily",due:null,done:{},createdAt:todayStr()},
-    {id:"seed2",name:"運動する",emoji:"🏃",color:COLORS[1],type:"habit",repeat:"daily",due:null,done:{},createdAt:todayStr()},
-    {id:"seed3",name:"読書",emoji:"📚",color:COLORS[0],type:"habit",repeat:[1,2,3,4,5],due:null,done:{},createdAt:todayStr()},
-  ];
-  save();
+/* seed */
+function seedIfEmpty(){
+  if(state.items.length===0&&!state._seeded){
+    state.items=[
+      {id:"seed1",name:"水を飲む",emoji:"💧",color:COLORS[4],type:"habit",repeat:"daily",target:8,due:null,done:{},order:0,createdAt:todayStr()},
+      {id:"seed2",name:"運動する",emoji:"🏃",color:COLORS[1],type:"habit",repeat:"daily",target:1,due:null,done:{},order:1,createdAt:todayStr()},
+      {id:"seed3",name:"読書",emoji:"📚",color:COLORS[0],type:"habit",repeat:[1,2,3,4,5],target:1,due:null,done:{},order:2,createdAt:todayStr()},
+    ];state._seeded=true;save();
+  }
 }
+if(!localStorage.getItem("kotsu_v1")){state._seeded=false;seedIfEmpty();}
 
-applyTheme();setDate();renderToday();
+/* midnight / refocus refresh */
+let curDay=todayStr();
+function tick(){if(todayStr()!==curDay){curDay=todayStr();setDate();renderToday();}fireReminderIfDue();}
+setInterval(tick,30000);
+document.addEventListener("visibilitychange",()=>{if(!document.hidden)tick();});
 
-/* service worker */
-if("serviceWorker" in navigator){navigator.serviceWorker.register("sw.js").catch(()=>{});}
+/* boot */
+applyTheme();setDate();renderToday();checkBadges();scheduleReminder();
+if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>
 </html>
