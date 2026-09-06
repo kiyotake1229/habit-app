@@ -147,6 +147,24 @@ header{padding:calc(16px + var(--safe-t)) 20px 8px;display:flex;align-items:cent
 .bar i{display:block;height:100%;border-radius:5px;transition:width .6s}
 .per-row .pc{font-size:13px;font-weight:800;flex:none}
 
+/* quote banner */
+.quote{background:var(--card);border-radius:16px;padding:12px 16px;margin:0 4px 14px;box-shadow:var(--shadow);border-left:4px solid var(--accent);display:flex;align-items:center;gap:10px}
+.quote .g{font-size:20px;flex:none}
+.quote .qt{font-size:13px;font-weight:600;color:var(--text);line-height:1.5}
+.quote .qt b{color:var(--accent);font-weight:800}
+
+/* drag */
+.item.dragging{transform:scale(1.03);box-shadow:0 14px 34px rgba(30,34,72,.22);opacity:.96;z-index:5;position:relative;cursor:grabbing}
+.item.dragging .nm{text-decoration:none}
+.list.reordering .item{transition:transform .18s}
+.item .grip{width:22px;flex:none;display:flex;flex-direction:column;gap:3px;align-items:center;justify-content:center;opacity:.35;margin-left:-4px}
+.item .grip span{width:16px;height:2px;border-radius:2px;background:var(--sub)}
+
+/* paused */
+.paused .em{filter:grayscale(1)}
+.paused{opacity:.6}
+.resume-btn{width:34px;height:34px;border-radius:50%;flex:none;display:grid;place-items:center;background:var(--card2);color:var(--good)}
+
 /* settings */
 .set-row{display:flex;align-items:center;gap:12px;padding:14px 0;border-bottom:1px solid var(--line)}
 .set-row:last-child{border-bottom:none}
@@ -238,6 +256,7 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
         <p id="sumSub">習慣を追加してみよう</p>
       </div>
     </div>
+    <div class="quote" id="quoteBanner" style="display:none"><div class="g" id="qGreet">☀️</div><div class="qt" id="qText"></div></div>
     <div id="todayContent"></div>
   </section>
 
@@ -393,8 +412,23 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
     <label>期限（任意）</label>
     <input type="date" id="dueIn">
   </div>
+  <div class="field" id="pauseField" style="display:none">
+    <label>状態</label>
+    <div class="set-row" style="padding:0;border:none">
+      <div class="st"><div class="t" style="font-size:14px">一時停止する</div><div class="d">今日の一覧から隠す（記録は残ります）</div></div>
+      <div class="switch" id="pauseSwitch"></div>
+    </div>
+  </div>
   <button class="save-btn" id="saveBtn">保存する</button>
   <button class="del-btn" id="delBtn" style="display:none">削除する</button>
+</div>
+
+<!-- day record sheet (backfill) -->
+<div class="sheet" id="daySheet">
+  <div class="grab"></div>
+  <h3 id="daySheetTitle">記録</h3>
+  <p style="font-size:12px;color:var(--sub);font-weight:600;margin:-8px 0 14px">タップでその日の達成を記録できます</p>
+  <div class="list" id="dayList"></div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -432,7 +466,7 @@ function load(){
   s.reminder=s.reminder||{enabled:false,time:"20:00",lastNotified:""};
   s.badges=s.badges||[];
   // migrate: ensure target/order
-  s.items.forEach((it,i)=>{if(it.target==null)it.target=1;if(it.order==null)it.order=i;it.done=it.done||{};});
+  s.items.forEach((it,i)=>{if(it.target==null)it.target=1;if(it.order==null)it.order=i;if(it.paused==null)it.paused=false;it.done=it.done||{};});
   return s;
 }
 function save(){localStorage.setItem("kotsu_v1",JSON.stringify(state))}
@@ -446,6 +480,7 @@ function isDone(it,ds){
 function scheduledToday(it,ds){
   const d=ds?new Date(ds+"T00:00:00"):new Date();
   if(it.type==="task")return !(it.done&&it.done.__done);
+  if(it.paused)return false;
   const dow=d.getDay();
   return it.repeat==="daily"||(Array.isArray(it.repeat)&&it.repeat.includes(dow));
 }
@@ -516,8 +551,11 @@ function renderToday(){
   else if(pct===100){$("#sumTitle").textContent="全部達成！お見事 🎉";$("#sumSub").textContent="この調子でつづけよう";}
   else{$("#sumTitle").textContent=`あと ${total-doneCount} 件`;$("#sumSub").textContent=`${total}件中 ${doneCount}件クリア`;}
 
+  renderQuote(total,pct);
+
+  const paused=state.items.filter(it=>it.type==="habit"&&it.paused).sort(sortItems);
   const c=$("#todayContent");
-  if(total===0){c.innerHTML=`<div class="empty"><div class="big">🌱</div><p>まだ何もありません。<br>下の＋ボタンから<br>習慣やタスクを追加しましょう。</p></div>`;return;}
+  if(total===0&&!paused.length){c.innerHTML=`<div class="empty"><div class="big">🌱</div><p>まだ何もありません。<br>下の＋ボタンから<br>習慣やタスクを追加しましょう。</p></div>`;return;}
   let html="";
   if(habits.length){
     html+=`<div class="sec-head"><h3>習慣</h3><span class="cnt">${habits.filter(it=>isDone(it,ds)).length}/${habits.length}</span></div><div class="list">`;
@@ -527,7 +565,44 @@ function renderToday(){
     html+=`<div class="sec-head"><h3>タスク</h3><span class="cnt">${tasks.filter(it=>isDone(it,ds)).length}/${tasks.length}</span></div><div class="list">`;
     tasks.forEach(it=>html+=itemCard(it,ds));html+=`</div>`;
   }
+  if(paused.length){
+    html+=`<div class="sec-head"><h3>お休み中</h3><span class="cnt">${paused.length}</span></div><div class="list">`;
+    paused.forEach(it=>html+=`<div class="item paused" data-id="${it.id}">
+      <div class="em" style="background:${it.color}22;color:${it.color}">${it.emoji}</div>
+      <div class="item-body"><div class="nm">${esc(it.name)}</div><div class="meta"><span class="chip">一時停止中</span></div></div>
+      <button class="resume-btn" data-resume="${it.id}" aria-label="再開"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></button>
+    </div>`);
+    html+=`</div>`;
+  }
   c.innerHTML=html;
+}
+const QUOTES=[
+  "小さな一歩が、大きな変化になる。",
+  "続けることが、いちばんの才能。",
+  "昨日の自分を、少しだけ超えよう。",
+  "完璧じゃなくていい。やめないことが大事。",
+  "今日できることを、今日やろう。",
+  "習慣は、未来へのプレゼント。",
+  "一日一善、一日一歩。",
+  "できる日もできない日も、記録は宝物。",
+  "焦らず、比べず、コツコツと。",
+  "小さな達成を、たくさん集めよう。",
+  "やる気は、動き出すと湧いてくる。",
+  "3日続けば、3週間も見えてくる。",
+  "自分との約束を、大切に。",
+  "今日の頑張りが、明日を軽くする。",
+];
+function renderQuote(total,pct){
+  const el=$("#quoteBanner");
+  if(total===0){el.style.display="none";return;}
+  const h=new Date().getHours();
+  const greet=h<5?"🌙 おそくまでおつかれさま":h<11?"☀️ おはよう":h<17?"🌤 こんにちは":h<22?"🌆 おつかれさま":"🌙 おつかれさま";
+  const g=greet.split(" ");
+  $("#qGreet").textContent=g[0];
+  const doy=Math.floor((Date.now()-new Date(new Date().getFullYear(),0,0))/864e5);
+  const q=pct===100?"今日は全部達成！最高のリズムだね。":QUOTES[doy%QUOTES.length];
+  $("#qText").innerHTML=`<b>${g.slice(1).join(" ")}。</b> ${q}`;
+  el.style.display="flex";
 }
 function itemCard(it,ds){
   const done=isDone(it,ds),st=streak(it),tgt=it.target||1,c=cnt(it,ds);
@@ -561,14 +636,62 @@ document.addEventListener("click",e=>{
     else{nowDone=!isDone(it,ds);if(nowDone)it.done[ds]=1;else delete it.done[ds];}
     save();
     const card=chk.closest(".item");
-    if(nowDone){card.classList.add("pop");burst(chk);}
+    if(nowDone){card.classList.add("pop");burst(chk);navigator.vibrate&&navigator.vibrate(15);}
     renderToday();checkBadges();
     setTimeout(()=>{if($("#ringPct").textContent==="100%"&&nowDone)celebrate();},60);
     return;
   }
+  const res=e.target.closest("[data-resume]");
+  if(res){const it=state.items.find(x=>x.id===res.dataset.resume);if(it){it.paused=false;save();renderToday();toast("再開しました 💪");}return;}
+  if(dragMoved){dragMoved=false;return;}
   const card=e.target.closest(".item");
   if(card&&card.dataset.id)openEdit(card.dataset.id);
 });
+
+/* ---------- drag reorder ---------- */
+let drag=null,dragMoved=false;
+const todayWrap=$("#todayContent");
+todayWrap.addEventListener("pointerdown",e=>{
+  if(e.pointerType==="mouse"&&e.button!==0)return;
+  const card=e.target.closest(".item");
+  if(!card||!card.dataset.id||e.target.closest(".check")||e.target.closest("[data-resume]")||card.classList.contains("paused"))return;
+  const sx=e.clientX,sy=e.clientY,pid=e.pointerId;
+  let hold=setTimeout(()=>startDrag(card,pid),260);
+  const cancel=ev=>{if(Math.abs(ev.clientY-sy)>8||Math.abs(ev.clientX-sx)>8){clearTimeout(hold);done();}};
+  const up=()=>{clearTimeout(hold);done();};
+  function done(){todayWrap.removeEventListener("pointermove",cancel);window.removeEventListener("pointerup",up);}
+  todayWrap.addEventListener("pointermove",cancel);
+  window.addEventListener("pointerup",up,{once:true});
+});
+function startDrag(card,pid){
+  navigator.vibrate&&navigator.vibrate(20);
+  drag={card,list:card.parentElement};
+  card.classList.add("dragging");drag.list.classList.add("reordering");
+  document.body.style.overflow="hidden";
+  try{card.setPointerCapture(pid)}catch(e){}
+  const move=ev=>{
+    ev.preventDefault();dragMoved=true;
+    const y=ev.clientY;
+    const sibs=[...drag.list.querySelectorAll(".item:not(.dragging)")];
+    let after=null;
+    for(const s of sibs){const r=s.getBoundingClientRect();if(y<r.top+r.height/2){after=s;break;}}
+    if(after)drag.list.insertBefore(card,after);else drag.list.appendChild(card);
+  };
+  const end=()=>{
+    card.classList.remove("dragging");drag.list.classList.remove("reordering");
+    document.body.style.overflow="";
+    window.removeEventListener("pointermove",move);
+    commitOrder();drag=null;
+    setTimeout(()=>{dragMoved=false;},80);
+  };
+  window.addEventListener("pointermove",move,{passive:false});
+  window.addEventListener("pointerup",end,{once:true});
+}
+function commitOrder(){
+  const cards=[...todayWrap.querySelectorAll(".item[data-id]")];
+  cards.forEach((c,i)=>{const it=state.items.find(x=>x.id===c.dataset.id);if(it)it.order=i;});
+  save();
+}
 
 /* ---------- stats ---------- */
 let calCursor=new Date();
@@ -620,21 +743,50 @@ function renderStats(){
     let s=0,done=0;A.habits.forEach(it=>{if(scheduledToday(it,dd)){s++;if(isDone(it,dd))done++;}});
     let dot="";if(s>0){const r=done/s;const col=r===1?"var(--good)":r>0?"var(--gold)":"var(--line)";dot=`<span class="dot" style="background:${col}"></span>`;}
     const future=dd>todayStr();
-    g+=`<div class="cell ${dd===todayStr()?"today":""}" style="${future?'opacity:.35':''}">${day}${dot}</div>`;
+    g+=`<div class="cell ${dd===todayStr()?"today":""}" ${future?'':`data-d="${dd}"`} style="${future?'opacity:.35':'cursor:pointer'}">${day}${dot}</div>`;
   }
   $("#calGrid").innerHTML=g;
 
   // per habit 30d
-  let ph="";
-  A.habits.forEach(it=>{let s=0,d=0;for(let i=0;i<30;i++){const dt=new Date();dt.setDate(dt.getDate()-i);const dd=dstr(dt);if(scheduledToday(it,dd)){s++;if(isDone(it,dd))d++;}}
+  let ph="";const perHabits=A.habits.filter(it=>!it.paused);
+  perHabits.forEach(it=>{let s=0,d=0;for(let i=0;i<30;i++){const dt=new Date();dt.setDate(dt.getDate()-i);const dd=dstr(dt);if(scheduledToday(it,dd)){s++;if(isDone(it,dd))d++;}}
     const pc=s?Math.round(d/s*100):0;
     ph+=`<div class="per-row"><div class="em" style="background:${it.color}22;color:${it.color}">${it.emoji}</div>
       <div class="info"><div class="nm">${esc(it.name)}</div><div class="bar"><i style="width:${pc}%;background:${it.color}"></i></div></div>
       <div class="pc" style="color:${it.color}">${pc}%</div></div>`;});
-  $("#perItem").innerHTML=A.habits.length?`<div class="sec-head"><h3>習慣別（直近30日）</h3></div>${ph}`:"";
+  $("#perItem").innerHTML=perHabits.length?`<div class="sec-head"><h3>習慣別（直近30日）</h3></div>${ph}`:"";
 }
 $("#calPrev").onclick=()=>{calCursor.setMonth(calCursor.getMonth()-1);renderStats();};
 $("#calNext").onclick=()=>{calCursor.setMonth(calCursor.getMonth()+1);renderStats();};
+
+/* ---------- day record (backfill) ---------- */
+let dayDate=null;
+$("#calGrid").addEventListener("click",e=>{const cell=e.target.closest("[data-d]");if(cell)openDaySheet(cell.dataset.d);});
+function openDaySheet(dd){
+  dayDate=dd;const d=new Date(dd+"T00:00:00");
+  const label=dd===todayStr()?"今日":`${d.getMonth()+1}月${d.getDate()}日 (${DOW[d.getDay()]})`;
+  $("#daySheetTitle").textContent=label+" の記録";
+  renderDayList();
+  $("#mask").classList.add("open");$("#daySheet").classList.add("open");
+}
+function renderDayList(){
+  const dd=dayDate;
+  const habits=state.items.filter(it=>it.type==="habit"&&scheduledToday(it,dd)).sort(sortItems);
+  if(!habits.length){$("#dayList").innerHTML=`<div class="empty" style="padding:24px 0"><p>この日に予定された<br>習慣はありません</p></div>`;return;}
+  $("#dayList").innerHTML=habits.map(it=>{const done=isDone(it,dd);
+    return `<div class="item ${done?'done':''}">
+      <div class="em" style="background:${it.color}22;color:${it.color}">${it.emoji}</div>
+      <div class="item-body"><div class="nm">${esc(it.name)}</div></div>
+      <button class="check" data-daycheck="${it.id}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></button>
+    </div>`;}).join("");
+}
+$("#dayList").addEventListener("click",e=>{
+  const b=e.target.closest("[data-daycheck]");if(!b)return;
+  const it=state.items.find(x=>x.id===b.dataset.daycheck);const dd=dayDate;it.done=it.done||{};
+  if(isDone(it,dd))delete it.done[dd];else it.done[dd]=it.target||1;
+  save();renderDayList();checkBadges();
+  navigator.vibrate&&navigator.vibrate(12);
+});
 
 /* ---------- badges check ---------- */
 let badgeQueue=[];
@@ -684,25 +836,34 @@ $("#typeSeg").onclick=e=>{const b=e.target.closest("[data-type]");if(!b)return;
   sel.type=b.dataset.type;$$("#typeSeg button").forEach(x=>x.classList.toggle("on",x===b));
   $("#repeatField").style.display=sel.type==="habit"?"block":"none";
   $("#targetField").style.display=sel.type==="habit"?"block":"none";
-  $("#dueField").style.display=sel.type==="task"?"block":"none";};
+  $("#dueField").style.display=sel.type==="task"?"block":"none";
+  $("#pauseField").style.display=(sel.type==="habit"&&editing)?"block":"none";};
 function openSheet(){buildPickers();$("#mask").classList.add("open");$("#sheet").classList.add("open");}
 function closeSheet(){$("#mask").classList.remove("open");$("#sheet").classList.remove("open");}
-$("#mask").onclick=closeSheet;
+function closeAllSheets(){
+  const wasDay=$("#daySheet").classList.contains("open");
+  $("#mask").classList.remove("open");$("#sheet").classList.remove("open");$("#daySheet").classList.remove("open");
+  if(wasDay){renderStats();renderToday();}
+}
+$("#mask").onclick=closeAllSheets;
+$("#pauseSwitch").onclick=()=>{sel.paused=!sel.paused;$("#pauseSwitch").classList.toggle("on",sel.paused);};
 $("#fab").onclick=()=>{
-  editing=null;sel={type:"habit",emoji:EMOJIS[Math.floor(Math.random()*EMOJIS.length)],color:COLORS[Math.floor(Math.random()*COLORS.length)],dows:[0,1,2,3,4,5,6],target:1};
+  editing=null;sel={type:"habit",emoji:EMOJIS[Math.floor(Math.random()*EMOJIS.length)],color:COLORS[Math.floor(Math.random()*COLORS.length)],dows:[0,1,2,3,4,5,6],target:1,paused:false};
   $("#sheetTitle").textContent="新しい習慣";$("#nameIn").value="";$("#dueIn").value="";
   $$("#typeSeg button").forEach(x=>x.classList.toggle("on",x.dataset.type==="habit"));
-  $("#repeatField").style.display="block";$("#targetField").style.display="block";$("#dueField").style.display="none";
+  $("#repeatField").style.display="block";$("#targetField").style.display="block";$("#dueField").style.display="none";$("#pauseField").style.display="none";
   $("#delBtn").style.display="none";openSheet();};
 function openEdit(id){
   const it=state.items.find(x=>x.id===id);editing=id;
-  sel={type:it.type,emoji:it.emoji,color:it.color,target:it.target||1,
+  sel={type:it.type,emoji:it.emoji,color:it.color,target:it.target||1,paused:!!it.paused,
     dows:it.repeat==="daily"?[0,1,2,3,4,5,6]:(Array.isArray(it.repeat)?[...it.repeat]:[0,1,2,3,4,5,6])};
   $("#sheetTitle").textContent="編集";$("#nameIn").value=it.name;$("#dueIn").value=it.due||"";
   $$("#typeSeg button").forEach(x=>x.classList.toggle("on",x.dataset.type===it.type));
   $("#repeatField").style.display=it.type==="habit"?"block":"none";
   $("#targetField").style.display=it.type==="habit"?"block":"none";
   $("#dueField").style.display=it.type==="task"?"block":"none";
+  $("#pauseField").style.display=it.type==="habit"?"block":"none";
+  $("#pauseSwitch").classList.toggle("on",sel.paused);
   $("#delBtn").style.display="block";openSheet();}
 $("#saveBtn").onclick=()=>{
   const name=$("#nameIn").value.trim();
@@ -710,8 +871,8 @@ $("#saveBtn").onclick=()=>{
   let repeat="daily";
   if(sel.type==="habit"){if(sel.dows.length===0){toast("曜日を1つ以上選んでね");return;}repeat=sel.dows.length===7?"daily":[...sel.dows].sort((a,b)=>a-b);}
   if(editing){const it=state.items.find(x=>x.id===editing);
-    it.name=name;it.emoji=sel.emoji;it.color=sel.color;it.type=sel.type;it.repeat=repeat;it.target=sel.type==="habit"?sel.target:1;it.due=sel.type==="task"?($("#dueIn").value||null):null;}
-  else{state.items.push({id:"i"+Date.now()+Math.random().toString(36).slice(2,6),name,emoji:sel.emoji,color:sel.color,type:sel.type,repeat,target:sel.type==="habit"?sel.target:1,due:sel.type==="task"?($("#dueIn").value||null):null,done:{},order:state.items.length,createdAt:todayStr()});}
+    it.name=name;it.emoji=sel.emoji;it.color=sel.color;it.type=sel.type;it.repeat=repeat;it.target=sel.type==="habit"?sel.target:1;it.due=sel.type==="task"?($("#dueIn").value||null):null;it.paused=sel.type==="habit"?!!sel.paused:false;}
+  else{state.items.push({id:"i"+Date.now()+Math.random().toString(36).slice(2,6),name,emoji:sel.emoji,color:sel.color,type:sel.type,repeat,target:sel.type==="habit"?sel.target:1,due:sel.type==="task"?($("#dueIn").value||null):null,paused:false,done:{},order:state.items.length,createdAt:todayStr()});}
   save();closeSheet();renderToday();checkBadges();toast(editing?"更新しました":"追加しました 🎉");};
 $("#delBtn").onclick=()=>{if(!editing)return;state.items=state.items.filter(x=>x.id!==editing);save();closeSheet();renderToday();toast("削除しました");};
 
@@ -798,6 +959,7 @@ function burst(el){const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.t
     c.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${Math.cos(ang)*dist}px,${Math.sin(ang)*dist}px) scale(0)`,opacity:0}],{duration:600,easing:"cubic-bezier(.2,.7,.3,1)"}).onfinish=()=>c.remove();}}
 function celebrate(){for(let i=0;i<44;i++){const c=document.createElement("div");c.className="confetti";c.style.background=COLORS[i%COLORS.length];c.style.left=Math.random()*100+"vw";c.style.top="-20px";document.body.appendChild(c);
   c.animate([{transform:"translateY(0) rotate(0)",opacity:1},{transform:`translateY(110vh) rotate(${Math.random()*720}deg)`,opacity:1}],{duration:1800+Math.random()*1200,easing:"cubic-bezier(.3,.6,.5,1)"}).onfinish=()=>c.remove();}
+  navigator.vibrate&&navigator.vibrate([0,30,40,30]);
   toast("今日のノルマ達成！ 🎉");}
 function setDate(){const d=new Date();$("#hDate").textContent=`${d.getMonth()+1}月${d.getDate()}日 (${DOW[d.getDay()]})`;}
 
