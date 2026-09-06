@@ -442,6 +442,32 @@ const DOW=["日","月","火","水","木","金","土"];
 const dstr=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
 const todayStr=()=>dstr(new Date());
 
+/* ---------- native bridge (Capacitor) : Web版では全てフォールバック ---------- */
+const NATIVE=!!(window.Capacitor&&window.Capacitor.isNativePlatform&&window.Capacitor.isNativePlatform());
+const CAP=(window.Capacitor&&window.Capacitor.Plugins)||{};
+function haptic(kind){ // 'LIGHT' | 'MEDIUM' | 'HEAVY'
+  if(NATIVE&&CAP.Haptics){try{CAP.Haptics.impact({style:kind||"MEDIUM"});}catch(e){}return;}
+  if(navigator.vibrate)navigator.vibrate(kind==="HEAVY"?[0,30,40,30]:kind==="LIGHT"?12:15);
+}
+async function nativeReminderPermission(){
+  if(!(NATIVE&&CAP.LocalNotifications))return false;
+  try{const p=await CAP.LocalNotifications.requestPermissions();return p.display==="granted";}catch(e){return false;}
+}
+async function nativeScheduleReminder(){
+  if(!(NATIVE&&CAP.LocalNotifications))return;
+  try{await CAP.LocalNotifications.cancel({notifications:[{id:1001}]});}catch(e){}
+  if(!state.reminder.enabled)return;
+  const [h,m]=(state.reminder.time||"20:00").split(":").map(Number);
+  try{await CAP.LocalNotifications.schedule({notifications:[{
+    id:1001,title:"コツコツ",body:"今日の習慣、わすれてない？ 💪",
+    schedule:{on:{hour:h,minute:m},repeats:true,allowWhileIdle:true}
+  }]});}catch(e){}
+}
+async function nativeTestNotification(){
+  if(!(NATIVE&&CAP.LocalNotifications))return false;
+  try{await CAP.LocalNotifications.schedule({notifications:[{id:1002,title:"コツコツ",body:"通知はこんな感じで届きます！",schedule:{at:new Date(Date.now()+1500)}}]});return true;}catch(e){return false;}
+}
+
 const BADGES=[
   {id:"first",ic:"🌱",name:"はじめの一歩",desc:"最初のひとつを完了",cond:s=>s.totalDone>=1},
   {id:"s3",ic:"🔥",name:"三日坊主卒業",desc:"3日連続で継続",cond:s=>s.maxStreak>=3},
@@ -636,7 +662,7 @@ document.addEventListener("click",e=>{
     else{nowDone=!isDone(it,ds);if(nowDone)it.done[ds]=1;else delete it.done[ds];}
     save();
     const card=chk.closest(".item");
-    if(nowDone){card.classList.add("pop");burst(chk);navigator.vibrate&&navigator.vibrate(15);}
+    if(nowDone){card.classList.add("pop");burst(chk);haptic("LIGHT");}
     renderToday();checkBadges();
     setTimeout(()=>{if($("#ringPct").textContent==="100%"&&nowDone)celebrate();},60);
     return;
@@ -785,7 +811,7 @@ $("#dayList").addEventListener("click",e=>{
   const it=state.items.find(x=>x.id===b.dataset.daycheck);const dd=dayDate;it.done=it.done||{};
   if(isDone(it,dd))delete it.done[dd];else it.done[dd]=it.target||1;
   save();renderDayList();checkBadges();
-  navigator.vibrate&&navigator.vibrate(12);
+  haptic("LIGHT");
 });
 
 /* ---------- badges check ---------- */
@@ -882,20 +908,22 @@ function renderSettings(){
   $("#remTime").value=state.reminder.time||"20:00";
   $("#remTimeRow").style.display=state.reminder.enabled?"flex":"none";
   $("#remTestRow").style.display=state.reminder.enabled?"flex":"none";
+  if(NATIVE)$("#remNote").textContent="設定した時刻に、アプリを開いていなくても通知が届きます。";
   $$("#themeSeg button").forEach(b=>b.classList.toggle("on",b.dataset.t===(state.theme||"auto")));
 }
 $("#remSwitch").onclick=async()=>{
   if(!state.reminder.enabled){
-    if(!("Notification"in window)){toast("この端末は通知に未対応です");return;}
-    let perm=Notification.permission;
-    if(perm==="default")perm=await Notification.requestPermission();
-    if(perm!=="granted"){toast("通知が許可されませんでした");return;}
+    let ok;
+    if(NATIVE){ok=await nativeReminderPermission();}
+    else{if(!("Notification"in window)){toast("この端末は通知に未対応です");return;}
+      let perm=Notification.permission;if(perm==="default")perm=await Notification.requestPermission();ok=perm==="granted";}
+    if(!ok){toast("通知が許可されませんでした");return;}
     state.reminder.enabled=true;toast("リマインドをオンにしました");
   }else{state.reminder.enabled=false;toast("リマインドをオフにしました");}
-  save();renderSettings();scheduleReminder();
+  save();renderSettings();scheduleReminder();nativeScheduleReminder();
 };
-$("#remTime").onchange=()=>{state.reminder.time=$("#remTime").value;save();scheduleReminder();toast("時刻を設定しました");};
-$("#remTest").onclick=()=>{notify("コツコツ",{body:"通知はこんな感じで届きます！"});};
+$("#remTime").onchange=()=>{state.reminder.time=$("#remTime").value;save();scheduleReminder();nativeScheduleReminder();toast("時刻を設定しました");};
+$("#remTest").onclick=async()=>{if(NATIVE){const ok=await nativeTestNotification();toast(ok?"まもなく通知が届きます":"通知が許可されていません");}else{notify("コツコツ",{body:"通知はこんな感じで届きます！"});}};
 
 $("#exportBtn").onclick=()=>{
   const blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
@@ -959,7 +987,7 @@ function burst(el){const r=el.getBoundingClientRect(),cx=r.left+r.width/2,cy=r.t
     c.animate([{transform:"translate(0,0) scale(1)",opacity:1},{transform:`translate(${Math.cos(ang)*dist}px,${Math.sin(ang)*dist}px) scale(0)`,opacity:0}],{duration:600,easing:"cubic-bezier(.2,.7,.3,1)"}).onfinish=()=>c.remove();}}
 function celebrate(){for(let i=0;i<44;i++){const c=document.createElement("div");c.className="confetti";c.style.background=COLORS[i%COLORS.length];c.style.left=Math.random()*100+"vw";c.style.top="-20px";document.body.appendChild(c);
   c.animate([{transform:"translateY(0) rotate(0)",opacity:1},{transform:`translateY(110vh) rotate(${Math.random()*720}deg)`,opacity:1}],{duration:1800+Math.random()*1200,easing:"cubic-bezier(.3,.6,.5,1)"}).onfinish=()=>c.remove();}
-  navigator.vibrate&&navigator.vibrate([0,30,40,30]);
+  haptic("HEAVY");
   toast("今日のノルマ達成！ 🎉");}
 function setDate(){const d=new Date();$("#hDate").textContent=`${d.getMonth()+1}月${d.getDate()}日 (${DOW[d.getDay()]})`;}
 
@@ -982,8 +1010,8 @@ setInterval(tick,30000);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)tick();});
 
 /* boot */
-applyTheme();setDate();renderToday();checkBadges();scheduleReminder();
-if("serviceWorker"in navigator)navigator.serviceWorker.register("sw.js").catch(()=>{});
+applyTheme();setDate();renderToday();checkBadges();scheduleReminder();nativeScheduleReminder();
+if("serviceWorker"in navigator&&!NATIVE)navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>
 </html>

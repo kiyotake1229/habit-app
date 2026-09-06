@@ -1,0 +1,15 @@
+{
+  "appId": "work.ltv.kotsu",
+  "appName": "コツコツ",
+  "webDir": "www",
+  "ios": {
+    "contentInset": "always",
+    "backgroundColor": "#f4f5f9"
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_icon",
+      "iconColor": "#6C5CE7"
+    }
+  }
+}
