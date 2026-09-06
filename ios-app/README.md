@@ -1,87 +1,69 @@
-# コツコツ iOSアプリ化ガイド（Capacitor）
+# コツコツ iOSアプリ（Capacitor）
 
-今の完成済みWebアプリ（`../index.html`）をそのままネイティブiOSアプリにして、App Storeへ申請するための手順です。
-土台（Capacitorプロジェクト・ネイティブ通知/触覚の組み込み）はすでに構築済みです。
+Webアプリ本体（`../index.html`）をネイティブiOSアプリとして同梱したプロジェクトです。
 
----
-
-## 全体像
-
-- **方式**: Capacitor で今の `index.html` をネイティブアプリに同梱
-- **ネイティブ強化済み**: ローカル通知（閉じていても定時に届く）／触覚フィードバック（本物の振動）
-- **App ID**: `work.ltv.kotsu`（変更可 → `capacitor.config.json`）
-- **アプリ名**: コツコツ
+- **申請・アップロードは担当者（上司）が実施** → 手順は [`上司への引き渡し手順.md`](上司への引き渡し手順.md)
+- このREADMEは開発側（アプリを作る人）向けのメモです
 
 ---
 
-## STEP 1〜3：あなたの作業（必須・私は代行不可）
+## 現在の状態
 
-### STEP 1. macOSを26.2以降にアップグレード
-- このMac（M1 MacBook Air）は対応しています。
-- **必ず事前にTime Machineでバックアップ**してください。
-- 「システム設定 → 一般 → ソフトウェアアップデート」から実行。1〜2時間程度。
+| 項目 | 状態 |
+|------|------|
+| Capacitorプロジェクト | ✅ 構築済み（`work.ltv.kotsu` / コツコツ） |
+| Xcodeプロジェクト生成 | ✅ 済み（`ios/App/App.xcworkspace`） |
+| Webアプリ同梱 | ✅ 済み（`ios/App/App/public/`） |
+| アプリアイコン・スプラッシュ | ✅ 生成済み（1024px・透過なし＝App Store要件OK） |
+| ネイティブ通知・触覚 | ✅ 組み込み済み |
+| `pod install` | ⚠️ **未完了**（Xcodeが必要なため。担当者側で1回実行） |
 
-### STEP 2. Xcodeをインストール
-- App Storeで「Xcode」を検索してインストール（約15GB）。
-- 完了後、ターミナルで一度だけ：
-  ```bash
-  sudo xcode-select -s /Applications/Xcode.app/Contents/Developer
-  sudo xcodebuild -license accept
-  ```
-- CocoaPodsを入れる（未導入なら）：
-  ```bash
-  brew install cocoapods
-  ```
-
-### STEP 3. Apple Developer Programに登録（年 $99）
-- https://developer.apple.com/programs/ から本人のApple IDで登録。
-- 支払い・本人確認が必要。承認まで最短で当日〜数日。
+> このMacはmacOSが古くXcodeを入れられないため `pod install` のみ未実行です。
+> Xcodeのある環境で `cd ios/App && pod install` を実行すれば完了します。
 
 ---
 
-## STEP 4：ビルド（Xcode導入後・私も手伝えます）
+## 構成
 
-このフォルダ（`ios-app/`）で：
-
-```bash
-npm install          # 依存の取得（初回のみ／実行済み）
-npm run add-ios      # www同期 → iOSプロジェクト生成 → 同期
-npm run icons        # アプリアイコンを自動生成（../icon-512.png から）
-npm run open         # Xcodeで開く
+```
+ios-app/
+├── package.json              npm設定（Capacitor + プラグイン）
+├── capacitor.config.json     アプリID・名前・プラグイン設定
+├── sync-web.sh               ../のWebアプリを www/ にコピー
+├── assets/                   アイコン元画像（1024px）
+├── www/                      同梱するWeb資産（自動生成・git管理外）
+└── ios/                      Xcodeプロジェクト
+    └── App/App.xcworkspace   ← これを開く
 ```
 
-Webアプリ側（`../index.html`）を修正したら、反映は：
+## よく使うコマンド
+
 ```bash
-npm run sync
+npm install        # 依存取得（初回のみ）
+npm run sync       # ../index.html の変更をiOSプロジェクトへ反映
+npm run icons      # アイコン・スプラッシュ再生成
+npm run open       # Xcodeで開く（要Xcode）
 ```
 
-## STEP 5：Xcodeで署名して実機/シミュレータ確認
+## アプリ本体を修正したら
 
-1. Xcodeが開いたら、左の「App」→「Signing & Capabilities」
-2. **Team** に STEP3 で登録したアカウントを選択（自動署名ON）
-3. 「Signing & Capabilities」→ **＋Capability** で **Push Notifications** は不要。ローカル通知のみなので追加設定は不要です。
-4. 上部の実行先を実機かシミュレータにして ▶ で起動 → 動作確認
+1. `../index.html` を編集
+2. `npm run sync` を実行
+3. Xcodeで再ビルド
 
-## STEP 6：App Store申請
+Web版（GitHub Pages）はリポジトリのルートをそのまま配信しているので、
+`../index.html` を push すればWeb版も同時に更新されます。
 
-1. https://appstoreconnect.apple.com でアプリを新規作成（Bundle ID = `work.ltv.kotsu`）
-2. Xcodeで「Product → Archive」→ Organizerから **Distribute App → App Store Connect** でアップロード
-3. App Store Connectで以下を入力（私が下書きを用意できます）：
-   - アプリ名 / サブタイトル / 説明文 / キーワード
-   - スクリーンショット（6.7インチ・6.5インチ・5.5インチ等）
-   - プライバシー: **データ収集なし**（すべて端末内localStorageのみ）で申請可
-   - サポートURL（例: GitHub PagesのURL）
-4. 審査へ提出（通常1〜3日）
+## ネイティブ専用の動作
 
----
+`../index.html` 内で `NATIVE`（Capacitor検出）により分岐しています。
 
-## 審査で気をつける点（重要）
-
-- Appleガイドライン **4.2（最低限の機能）**: 単なるWebサイトの殻は却下されます。
-  本アプリは**オフライン動作・端末内データ・ネイティブ通知/触覚**を備えた自立アプリなので問題になりにくいですが、
-  申請時の説明で「習慣管理を完結して行える独立アプリ」であることを明確にしてください。
+| 機能 | Web版 | ネイティブ版 |
+|------|-------|-------------|
+| 触覚 | `navigator.vibrate` | Capacitor Haptics（本物の触覚） |
+| リマインド通知 | アプリを開いている時のみ | **閉じていても定時に届く**（ローカル通知） |
 
 ## メモ
-- `npm audit` の警告は開発用ツール（アイコン生成の `@capacitor/assets`）の依存にあるもので、
-  **アプリ本体には含まれません**。無視して問題ありません。
-- `www/` と `ios/` の生成物、`node_modules/` は `.gitignore` 済み。
+
+- `npm audit` の警告はアイコン生成ツールの依存によるもので、アプリ本体には含まれません。
+- `Pods/` `node_modules/` `www/` はgit管理外です。
