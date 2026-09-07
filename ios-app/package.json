@@ -15,7 +15,8 @@
     "@capacitor/core": "^7.0.0",
     "@capacitor/haptics": "^7.0.0",
     "@capacitor/ios": "^7.0.0",
-    "@capacitor/local-notifications": "^7.0.0"
+    "@capacitor/local-notifications": "^7.0.0",
+    "@capacitor/preferences": "^7.0.4"
   },
   "devDependencies": {
     "@capacitor/assets": "^3.0.5",

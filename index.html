@@ -229,6 +229,43 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
 .bpop-card .t1{font-size:13px;font-weight:800;color:var(--gold);letter-spacing:1px}
 .bpop-card .t2{font-size:20px;font-weight:800;margin:6px 0 2px}
 .bpop-card .t3{font-size:13px;color:var(--sub);font-weight:600}
+
+/* confirm dialog */
+.cdlg{position:fixed;inset:0;z-index:90;display:grid;place-items:center;background:rgba(10,12,24,.55);opacity:0;pointer-events:none;transition:.25s;backdrop-filter:blur(4px);padding:24px}
+.cdlg.show{opacity:1;pointer-events:auto}
+.cdlg-card{background:var(--card);border-radius:22px;padding:24px;width:100%;max-width:330px;transform:scale(.9);transition:.28s cubic-bezier(.3,1.3,.5,1);box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.cdlg.show .cdlg-card{transform:scale(1)}
+.cdlg-ic{width:52px;height:52px;border-radius:50%;display:grid;place-items:center;margin:0 auto 14px;background:#ff767522;color:var(--warn)}
+.cdlg-card h4{font-size:18px;font-weight:800;text-align:center;margin-bottom:8px}
+.cdlg-card p{font-size:13.5px;color:var(--sub);font-weight:600;text-align:center;line-height:1.6;margin-bottom:20px}
+.cdlg-btns{display:flex;gap:10px}
+.cdlg-btns button{flex:1;padding:14px;border-radius:14px;font-size:15px;font-weight:800;transition:transform .15s}
+.cdlg-btns button:active{transform:scale(.96)}
+.cdlg-cancel{background:var(--card2);color:var(--text)}
+.cdlg-ok{background:var(--warn);color:#fff}
+
+/* onboarding */
+.obd{position:fixed;inset:0;z-index:95;display:grid;place-items:center;background:rgba(10,12,24,.6);opacity:0;pointer-events:none;transition:.3s;backdrop-filter:blur(6px);padding:22px}
+.obd.show{opacity:1;pointer-events:auto}
+.obd-card{background:var(--card);border-radius:24px;padding:26px 22px 22px;width:100%;max-width:360px;transform:translateY(16px) scale(.96);transition:.35s cubic-bezier(.3,1.2,.5,1);box-shadow:0 24px 70px rgba(0,0,0,.35);max-height:88vh;overflow-y:auto}
+.obd.show .obd-card{transform:none}
+.obd-ic{font-size:44px;text-align:center;margin-bottom:6px}
+.obd-card h3{font-size:20px;font-weight:800;text-align:center;margin-bottom:4px}
+.obd-lead{font-size:13px;color:var(--sub);font-weight:600;text-align:center;margin-bottom:20px}
+.obd-list{list-style:none;display:flex;flex-direction:column;gap:14px;margin-bottom:22px}
+.obd-list li{display:flex;gap:12px;align-items:flex-start}
+.obd-list .oi{width:38px;height:38px;border-radius:12px;background:var(--card2);display:grid;place-items:center;flex:none;color:var(--accent)}
+.obd-list b{display:block;font-size:14px;font-weight:800;margin-bottom:2px}
+.obd-list span.d{font-size:12.5px;color:var(--sub);font-weight:600;line-height:1.5}
+
+/* tablet / iPad */
+@media (min-width:768px){
+  #app{max-width:600px;padding-bottom:calc(112px + var(--safe-b))}
+  .tabbar{width:400px;max-width:calc(100% - 48px);left:50%;right:auto;transform:translateX(-50%);border-radius:24px;bottom:calc(20px + var(--safe-b));border:1px solid var(--line);box-shadow:0 8px 30px rgba(30,34,72,.14);padding:12px 0}
+  .fab{right:calc(50% - 292px);bottom:calc(112px + var(--safe-b))}
+  header{padding-top:calc(26px + var(--safe-t))}
+  .h-title{font-size:30px}
+}
 </style>
 </head>
 <body>
@@ -285,8 +322,8 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
       <div class="cal-head">
         <b id="calLabel"></b>
         <div class="cal-nav">
-          <button id="calPrev">‹</button>
-          <button id="calNext">›</button>
+          <button id="calPrev" aria-label="前の月">‹</button>
+          <button id="calNext" aria-label="次の月">›</button>
         </div>
       </div>
       <div class="dow"><span>日</span><span>月</span><span>火</span><span>水</span><span>木</span><span>金</span><span>土</span></div>
@@ -302,7 +339,7 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
       <div class="set-row">
         <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.7 21a2 2 0 0 1-3.4 0"/></svg></div>
         <div class="st"><div class="t">毎日のリマインド</div><div class="d">未完了があれば通知します</div></div>
-        <div class="switch" id="remSwitch"></div>
+        <div class="switch" id="remSwitch" role="switch" tabindex="0" aria-label="毎日のリマインド"></div>
       </div>
       <div class="set-row" id="remTimeRow" style="display:none">
         <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
@@ -312,7 +349,7 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
       <div class="set-row" id="remTestRow" style="display:none">
         <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></div>
         <div class="st"><div class="t">テスト通知を送る</div><div class="d">通知が届くか試せます</div></div>
-        <button class="mini-btn" id="remTest">送信</button>
+        <button class="mini-btn" id="remTest" aria-label="テスト通知を送信">送信</button>
       </div>
       <div class="set-row"><div class="st"><div class="d" id="remNote" style="margin:0">iPhoneは「ホーム画面に追加」した状態＋iOS16.4以降で通知が使えます。アプリを開いた時にも未完了があればお知らせします。</div></div></div>
     </div>
@@ -335,18 +372,18 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
       <div class="set-row">
         <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg></div>
         <div class="st"><div class="t">バックアップを保存</div><div class="d">データをファイルに書き出し</div></div>
-        <button class="mini-btn" id="exportBtn">保存</button>
+        <button class="mini-btn" id="exportBtn" aria-label="バックアップを保存">保存</button>
       </div>
       <div class="set-row">
         <div class="si"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M17 8l-5-5-5 5"/><path d="M12 3v12"/></svg></div>
         <div class="st"><div class="t">バックアップから復元</div><div class="d">保存したファイルを読み込み</div></div>
-        <button class="mini-btn" id="importBtn">読込</button>
+        <button class="mini-btn" id="importBtn" aria-label="バックアップから復元">読込</button>
         <input type="file" id="importFile" accept="application/json" style="display:none">
       </div>
       <div class="set-row">
         <div class="si" style="color:var(--warn)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></div>
         <div class="st"><div class="t">すべてリセット</div><div class="d">習慣・記録を全部消します</div></div>
-        <button class="mini-btn danger" id="resetBtn">リセット</button>
+        <button class="mini-btn danger" id="resetBtn" aria-label="すべてリセット">リセット</button>
       </div>
     </div>
     <div style="text-align:center;color:var(--sub);font-size:12px;font-weight:600;padding:8px 0 4px">コツコツ v2 — 習慣＆タスク管理</div>
@@ -357,16 +394,16 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
   <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>
 </button>
 
-<nav class="tabbar">
-  <button class="tab on" data-tab="today">
+<nav class="tabbar" role="tablist">
+  <button class="tab on" data-tab="today" role="tab" aria-selected="true" aria-label="今日">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
     今日
   </button>
-  <button class="tab" data-tab="stats">
+  <button class="tab" data-tab="stats" role="tab" aria-selected="false" aria-label="統計">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="8"/><rect x="12" y="6" width="3" height="12"/><rect x="17" y="13" width="3" height="5"/></svg>
     統計
   </button>
-  <button class="tab" data-tab="set">
+  <button class="tab" data-tab="set" role="tab" aria-selected="false" aria-label="設定">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
     設定
   </button>
@@ -397,15 +434,25 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
     <div class="color-pick" id="colorPick"></div>
   </div>
   <div class="field" id="repeatField">
-    <label>くり返す曜日</label>
-    <div class="dows" id="dowPick"></div>
+    <label>くり返し</label>
+    <div class="seg" id="repeatSeg" style="margin-bottom:12px">
+      <button data-r="daily" class="on">毎日</button>
+      <button data-r="dows">曜日で</button>
+      <button data-r="weekly">週に◯回</button>
+    </div>
+    <div class="dows" id="dowPick" style="display:none"></div>
+    <div class="stepper" id="weeklyStep" style="display:none">
+      <button id="wkMinus" aria-label="回数を減らす">−</button>
+      <span class="sv" id="wkVal">週3回</span>
+      <button id="wkPlus" aria-label="回数を増やす">＋</button>
+    </div>
   </div>
   <div class="field" id="targetField">
     <label>1日の目標回数</label>
     <div class="stepper">
-      <button id="tgtMinus">−</button>
+      <button id="tgtMinus" aria-label="回数を減らす">−</button>
       <span class="sv" id="tgtVal">1回</span>
-      <button id="tgtPlus">＋</button>
+      <button id="tgtPlus" aria-label="回数を増やす">＋</button>
     </div>
   </div>
   <div class="field" id="dueField" style="display:none">
@@ -416,7 +463,7 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
     <label>状態</label>
     <div class="set-row" style="padding:0;border:none">
       <div class="st"><div class="t" style="font-size:14px">一時停止する</div><div class="d">今日の一覧から隠す（記録は残ります）</div></div>
-      <div class="switch" id="pauseSwitch"></div>
+      <div class="switch" id="pauseSwitch" role="switch" tabindex="0" aria-label="一時停止"></div>
     </div>
   </div>
   <button class="save-btn" id="saveBtn">保存する</button>
@@ -429,6 +476,45 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
   <h3 id="daySheetTitle">記録</h3>
   <p style="font-size:12px;color:var(--sub);font-weight:600;margin:-8px 0 14px">タップでその日の達成を記録できます</p>
   <div class="list" id="dayList"></div>
+</div>
+
+<div class="obd" id="obd" role="dialog" aria-modal="true" aria-labelledby="obdTitle">
+  <div class="obd-card">
+    <div class="obd-ic" aria-hidden="true">🌱</div>
+    <h3 id="obdTitle">コツコツへようこそ</h3>
+    <p class="obd-lead">続けるほど、記録が育っていきます。</p>
+    <ul class="obd-list">
+      <li>
+        <div class="oi" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></div>
+        <div><b>タップで記録</b><span class="d">右の丸をタップするだけ。「1日8回」など回数タイプは、押すたびに増えます。</span></div>
+      </li>
+      <li>
+        <div class="oi" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div>
+        <div><b>長押しで並べ替え</b><span class="d">習慣を長押ししてドラッグすると、好きな順番に入れ替えられます。</span></div>
+      </li>
+      <li>
+        <div class="oi" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="3"/><path d="M16 2v4M8 2v4M3 10h18"/></svg></div>
+        <div><b>あとから記録できる</b><span class="d">統計タブのカレンダーで過去の日をタップすれば、やり忘れも後から記録できます。</span></div>
+      </li>
+      <li>
+        <div class="oi" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10 4v16M14 4v16"/></svg></div>
+        <div><b>お休みもできる</b><span class="d">旅行や体調不良のときは編集画面から一時停止。記録は消さずにお休みできます。</span></div>
+      </li>
+    </ul>
+    <button class="save-btn" id="obdStart">はじめる</button>
+  </div>
+</div>
+
+<div class="cdlg" id="cdlg" role="alertdialog" aria-modal="true" aria-labelledby="cdlgTitle">
+  <div class="cdlg-card">
+    <div class="cdlg-ic"><svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 9v4M12 17h.01"/><path d="M10.3 3.9L1.8 18a2 2 0 0 0 1.7 3h17a2 2 0 0 0 1.7-3L13.7 3.9a2 2 0 0 0-3.4 0z"/></svg></div>
+    <h4 id="cdlgTitle"></h4>
+    <p id="cdlgMsg"></p>
+    <div class="cdlg-btns">
+      <button class="cdlg-cancel" id="cdlgNo">キャンセル</button>
+      <button class="cdlg-ok" id="cdlgYes">削除する</button>
+    </div>
+  </div>
 </div>
 
 <div class="toast" id="toast"></div>
@@ -483,19 +569,45 @@ const BADGES=[
   {id:"night",ic:"🌙",name:"継続の証",desc:"5種類以上の習慣を登録",cond:s=>s.habitTypes>=5},
 ];
 
-let state=load();
-function load(){
-  let s;try{s=JSON.parse(localStorage.getItem("kotsu_v1"))}catch(e){}
+const STORE_KEY="kotsu_v1";
+function normalize(s){
   s=s||{};
   s.items=s.items||[];
   s.theme=s.theme||null;              // null=auto
   s.reminder=s.reminder||{enabled:false,time:"20:00",lastNotified:""};
   s.badges=s.badges||[];
-  // migrate: ensure target/order
+  // migrate: ensure target/order/paused
   s.items.forEach((it,i)=>{if(it.target==null)it.target=1;if(it.order==null)it.order=i;if(it.paused==null)it.paused=false;it.done=it.done||{};});
   return s;
 }
-function save(){localStorage.setItem("kotsu_v1",JSON.stringify(state))}
+let state=load();
+function load(){
+  let s;try{s=JSON.parse(localStorage.getItem(STORE_KEY))}catch(e){}
+  return normalize(s);
+}
+/* localStorage と ネイティブ保存(Preferences)の二重化。
+   iOSはストレージ逼迫時にWebViewのlocalStorageを消すことがあるため、
+   ネイティブ側にも必ず書き、起動時に取りこぼしを復元する。 */
+function save(){
+  const json=JSON.stringify(state);
+  try{localStorage.setItem(STORE_KEY,json);}catch(e){}
+  if(NATIVE&&CAP.Preferences){try{CAP.Preferences.set({key:STORE_KEY,value:json});}catch(e){}}
+}
+function recordCount(s){let n=0;(s.items||[]).forEach(it=>{n+=Object.keys(it.done||{}).length;});return n;}
+async function hydrateFromNative(){
+  if(!(NATIVE&&CAP.Preferences))return;
+  try{
+    const r=await CAP.Preferences.get({key:STORE_KEY});
+    if(!r||!r.value)return;
+    const d=JSON.parse(r.value);
+    if(!d||!Array.isArray(d.items))return;
+    if(recordCount(d)>recordCount(state)){
+      state=normalize(d);save();
+      applyTheme();setDate();renderToday();renderSettings();checkBadges();
+      toast("データを復元しました");
+    }
+  }catch(e){}
+}
 
 /* completion helpers (done[ds] holds a count for habits; tasks use __done) */
 function cnt(it,ds){const v=it.done&&it.done[ds];return v===true?1:(v||0)}
@@ -503,15 +615,46 @@ function isDone(it,ds){
   if(it.type==="task")return !!(it.done&&it.done.__done);
   return cnt(it,ds)>=(it.target||1);
 }
+/* 週◯回タイプ: repeat = {w:N} */
+function isWeekly(it){return !!(it.repeat&&typeof it.repeat==="object"&&!Array.isArray(it.repeat)&&it.repeat.w);}
+function weekDoneCount(it,ds){
+  const d=ds?new Date(ds+"T00:00:00"):new Date();
+  const st=new Date(d);st.setDate(d.getDate()-d.getDay());
+  let n=0;
+  for(let i=0;i<7;i++){const t=new Date(st);t.setDate(st.getDate()+i);if(isDone(it,dstr(t)))n++;}
+  return n;
+}
+function weeklyMet(it,ds){return weekDoneCount(it,ds)>=(it.repeat.w||1);}
+/* 今日の一覧に出すか（週◯回は毎日チャンスがある） */
 function scheduledToday(it,ds){
   const d=ds?new Date(ds+"T00:00:00"):new Date();
   if(it.type==="task")return !(it.done&&it.done.__done);
   if(it.paused)return false;
+  if(isWeekly(it))return true;
   const dow=d.getDay();
   return it.repeat==="daily"||(Array.isArray(it.repeat)&&it.repeat.includes(dow));
 }
+/* 今日の達成扱い（週◯回は週の目標を満たしていればOK） */
+function todayDone(it,ds){return isDone(it,ds)||(isWeekly(it)&&weeklyMet(it,ds));}
+/* 統計用: その日が[対象か, 達成したか]。週◯回は達成日だけ加算して未達日で減点しない */
+function statDay(it,dd){
+  if(it.type!=="habit"||it.paused)return [0,0];
+  if(isWeekly(it))return isDone(it,dd)?[1,1]:[0,0];
+  const d=new Date(dd+"T00:00:00"),dow=d.getDay();
+  const sch=it.repeat==="daily"||(Array.isArray(it.repeat)&&it.repeat.includes(dow));
+  return sch?[1,isDone(it,dd)?1:0]:[0,0];
+}
 function streak(it){
   if(it.type!=="habit")return 0;
+  if(isWeekly(it)){ // 週単位で連続達成数を数える
+    let s=0;const base=new Date();
+    for(let w=0;w<200;w++){
+      const ref=new Date(base);ref.setDate(base.getDate()-w*7);
+      if(weeklyMet(it,dstr(ref)))s++;
+      else if(w>0)break;   // 今週(w=0)の未達はまだ進行中なので数えないだけ
+    }
+    return s;
+  }
   let s=0;const d=new Date();
   for(let i=0;i<400;i++){
     const ds=dstr(d),dow=d.getDay();
@@ -535,8 +678,8 @@ function aggregate(){
   // perfect days (last 60d)
   let perfectDays=0;const d=new Date();
   for(let i=0;i<60;i++){const ds=dstr(d);
-    const sch=habits.filter(it=>scheduledToday(it,ds));
-    if(sch.length&&sch.every(it=>isDone(it,ds)))perfectDays++;
+    let s=0,c=0;habits.forEach(it=>{const [a,b]=statDay(it,ds);s+=a;c+=b;});
+    if(s>0&&s===c)perfectDays++;
     d.setDate(d.getDate()-1);}
   const xp=totalDone*10;
   const li=levelInfo(xp);
@@ -568,7 +711,7 @@ function renderToday(){
   const habits=state.items.filter(it=>it.type==="habit"&&scheduledToday(it,ds)).sort(sortItems);
   const tasks=state.items.filter(it=>it.type==="task"&&!(it.done&&it.done.__done)).sort(sortItems);
   const all=[...habits,...tasks];
-  const doneCount=habits.filter(it=>isDone(it,ds)).length;
+  const doneCount=habits.filter(it=>todayDone(it,ds)).length;
   const total=all.length;
   const pct=total?Math.round(doneCount/total*100):0;
   $("#ringFg").style.strokeDashoffset=201-201*pct/100;
@@ -584,7 +727,7 @@ function renderToday(){
   if(total===0&&!paused.length){c.innerHTML=`<div class="empty"><div class="big">🌱</div><p>まだ何もありません。<br>下の＋ボタンから<br>習慣やタスクを追加しましょう。</p></div>`;return;}
   let html="";
   if(habits.length){
-    html+=`<div class="sec-head"><h3>習慣</h3><span class="cnt">${habits.filter(it=>isDone(it,ds)).length}/${habits.length}</span></div><div class="list">`;
+    html+=`<div class="sec-head"><h3>習慣</h3><span class="cnt">${habits.filter(it=>todayDone(it,ds)).length}/${habits.length}</span></div><div class="list">`;
     habits.forEach(it=>html+=itemCard(it,ds));html+=`</div>`;
   }
   if(tasks.length){
@@ -631,22 +774,34 @@ function renderQuote(total,pct){
   el.style.display="flex";
 }
 function itemCard(it,ds){
-  const done=isDone(it,ds),st=streak(it),tgt=it.target||1,c=cnt(it,ds);
-  let meta="";
+  const done=todayDone(it,ds),st=streak(it),tgt=it.target||1,c=cnt(it,ds);
+  let meta="",state="";
   if(it.type==="habit"){
-    let rep=it.repeat==="daily"?"毎日":it.repeat.map(d=>DOW[d]).join("・");
-    if(tgt>1)rep+=` ${c}/${tgt}回`;
-    meta=st>0?`<span class="streak">🔥${st}日</span> <span class="chip">${rep}</span>`:`<span class="chip">${rep}</span>`;
+    let rep;
+    if(isWeekly(it)){
+      const wc=weekDoneCount(it,ds),wn=it.repeat.w;
+      rep=`週${wn}回`;
+      meta=`<span class="chip">${rep}</span> <span class="chip">今週 ${wc}/${wn}</span>`;
+      if(st>0)meta=`<span class="streak">🔥${st}週</span> `+meta;
+      state=weeklyMet(it,ds)?"今週の目標達成":`今週 ${wc}回中 ${wn}回`;
+    }else{
+      rep=it.repeat==="daily"?"毎日":it.repeat.map(d=>DOW[d]).join("・");
+      if(tgt>1)rep+=` ${c}/${tgt}回`;
+      meta=st>0?`<span class="streak">🔥${st}日</span> <span class="chip">${rep}</span>`:`<span class="chip">${rep}</span>`;
+      state=tgt>1?`${c}回中 ${tgt}回`:(done?"完了":"未完了");
+    }
   }else{
     meta=it.due?`<span class="chip">📅 ${it.due.slice(5).replace("-","/")}</span>`:`<span class="chip">タスク</span>`;
+    state=done?"完了":"未完了";
   }
-  const checkInner=(it.type==="habit"&&tgt>1&&!done)
+  const showNum=(it.type==="habit"&&tgt>1&&!done&&!isWeekly(it));
+  const checkInner=showNum
     ? `<span class="num">${c}</span>`
     : `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg>`;
   return `<div class="item ${done?"done":""}" data-id="${it.id}">
-    <div class="em" style="background:${it.color}22;color:${it.color}">${it.emoji}</div>
+    <div class="em" aria-hidden="true" style="background:${it.color}22;color:${it.color}">${it.emoji}</div>
     <div class="item-body"><div class="nm">${esc(it.name)}</div><div class="meta">${meta}</div></div>
-    <button class="check" data-check="${it.id}">${checkInner}</button>
+    <button class="check" data-check="${it.id}" role="checkbox" aria-checked="${done?"true":"false"}" aria-label="${esc(it.name)} ${state}">${checkInner}</button>
   </div>`;
 }
 
@@ -731,11 +886,11 @@ function renderStats(){
   // today & week
   const ds=todayStr();
   const todayHabits=A.habits.filter(it=>scheduledToday(it,ds));
-  const todayPct=todayHabits.length?Math.round(todayHabits.filter(it=>isDone(it,ds)).length/todayHabits.length*100):0;
+  const todayPct=todayHabits.length?Math.round(todayHabits.filter(it=>todayDone(it,ds)).length/todayHabits.length*100):0;
   let sch=0,dn=0;
   const week=[];
   for(let i=6;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);const dd=dstr(d);
-    let s=0,c=0;A.habits.forEach(it=>{if(scheduledToday(it,dd)){s++;sch++;if(isDone(it,dd)){c++;dn++;}}});
+    let s=0,c=0;A.habits.forEach(it=>{const [a,b]=statDay(it,dd);s+=a;c+=b;sch+=a;dn+=b;});
     week.push({dow:DOW[d.getDay()],pct:s?Math.round(c/s*100):0,has:s>0,today:dd===todayStr()});}
   const week7=sch?Math.round(dn/sch*100):0;
 
@@ -766,19 +921,28 @@ function renderStats(){
   let g="";for(let i=0;i<first;i++)g+=`<div class="cell pad"></div>`;
   for(let day=1;day<=days;day++){
     const dd=`${y}-${String(m+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
-    let s=0,done=0;A.habits.forEach(it=>{if(scheduledToday(it,dd)){s++;if(isDone(it,dd))done++;}});
+    let s=0,done=0;A.habits.forEach(it=>{const [a,b]=statDay(it,dd);s+=a;done+=b;});
     let dot="";if(s>0){const r=done/s;const col=r===1?"var(--good)":r>0?"var(--gold)":"var(--line)";dot=`<span class="dot" style="background:${col}"></span>`;}
     const future=dd>todayStr();
-    g+=`<div class="cell ${dd===todayStr()?"today":""}" ${future?'':`data-d="${dd}"`} style="${future?'opacity:.35':'cursor:pointer'}">${day}${dot}</div>`;
+    const lab=s>0?`${m+1}月${day}日 ${done}/${s}件達成`:`${m+1}月${day}日`;
+    g+=`<div class="cell ${dd===todayStr()?"today":""}" ${future?'':`data-d="${dd}" role="button" tabindex="0" aria-label="${lab} の記録を編集"`} style="${future?'opacity:.35':'cursor:pointer'}">${day}${dot}</div>`;
   }
   $("#calGrid").innerHTML=g;
 
   // per habit 30d
   let ph="";const perHabits=A.habits.filter(it=>!it.paused);
-  perHabits.forEach(it=>{let s=0,d=0;for(let i=0;i<30;i++){const dt=new Date();dt.setDate(dt.getDate()-i);const dd=dstr(dt);if(scheduledToday(it,dd)){s++;if(isDone(it,dd))d++;}}
-    const pc=s?Math.round(d/s*100):0;
+  perHabits.forEach(it=>{
+    let pc=0,sub="";
+    if(isWeekly(it)){ // 直近4週で目標を満たせた週の割合
+      let met=0;const base=new Date();
+      for(let w=0;w<4;w++){const ref=new Date(base);ref.setDate(base.getDate()-w*7);if(weeklyMet(it,dstr(ref)))met++;}
+      pc=Math.round(met/4*100);sub=`<span style="font-size:11px;color:var(--sub);font-weight:700"> 直近4週で${met}週達成</span>`;
+    }else{
+      let s=0,d=0;for(let i=0;i<30;i++){const dt=new Date();dt.setDate(dt.getDate()-i);const [a,b]=statDay(it,dstr(dt));s+=a;d+=b;}
+      pc=s?Math.round(d/s*100):0;
+    }
     ph+=`<div class="per-row"><div class="em" style="background:${it.color}22;color:${it.color}">${it.emoji}</div>
-      <div class="info"><div class="nm">${esc(it.name)}</div><div class="bar"><i style="width:${pc}%;background:${it.color}"></i></div></div>
+      <div class="info"><div class="nm">${esc(it.name)}${sub}</div><div class="bar"><i style="width:${pc}%;background:${it.color}"></i></div></div>
       <div class="pc" style="color:${it.color}">${pc}%</div></div>`;});
   $("#perItem").innerHTML=perHabits.length?`<div class="sec-head"><h3>習慣別（直近30日）</h3></div>${ph}`:"";
 }
@@ -803,7 +967,7 @@ function renderDayList(){
     return `<div class="item ${done?'done':''}">
       <div class="em" style="background:${it.color}22;color:${it.color}">${it.emoji}</div>
       <div class="item-body"><div class="nm">${esc(it.name)}</div></div>
-      <button class="check" data-daycheck="${it.id}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></button>
+      <button class="check" data-daycheck="${it.id}" role="checkbox" aria-checked="${done?"true":"false"}" aria-label="${esc(it.name)} ${done?"達成":"未達成"}"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></button>
     </div>`;}).join("");
 }
 $("#dayList").addEventListener("click",e=>{
@@ -834,7 +998,8 @@ $("#bpop").onclick=()=>{$("#bpop").classList.remove("show");clearTimeout(showNex
 
 /* ---------- tabs ---------- */
 $$(".tab").forEach(t=>t.onclick=()=>{
-  $$(".tab").forEach(x=>x.classList.remove("on"));t.classList.add("on");
+  $$(".tab").forEach(x=>{x.classList.remove("on");x.setAttribute("aria-selected","false");});
+  t.classList.add("on");t.setAttribute("aria-selected","true");
   const tab=t.dataset.tab;
   $$(".screen").forEach(s=>s.classList.remove("active"));
   $("#s-"+tab).classList.add("active");
@@ -847,11 +1012,18 @@ $$(".tab").forEach(t=>t.onclick=()=>{
 /* ---------- sheet ---------- */
 let editing=null,sel={type:"habit",emoji:EMOJIS[0],color:COLORS[0],dows:[0,1,2,3,4,5,6],target:1};
 function buildPickers(){
-  $("#emojiPick").innerHTML=EMOJIS.map(e=>`<button data-e="${e}" class="${e===sel.emoji?'on':''}">${e}</button>`).join("");
-  $("#colorPick").innerHTML=COLORS.map(c=>`<button data-c="${c}" class="${c===sel.color?'on':''}" style="background:${c}"></button>`).join("");
-  $("#dowPick").innerHTML=DOW.map((d,i)=>`<button data-d="${i}" class="${sel.dows.includes(i)?'on':''}">${d}</button>`).join("");
+  $("#emojiPick").innerHTML=EMOJIS.map(e=>`<button data-e="${e}" class="${e===sel.emoji?'on':''}" aria-label="アイコン ${e}" aria-pressed="${e===sel.emoji}">${e}</button>`).join("");
+  $("#colorPick").innerHTML=COLORS.map(c=>`<button data-c="${c}" class="${c===sel.color?'on':''}" style="background:${c}" aria-label="カラー" aria-pressed="${c===sel.color}"></button>`).join("");
+  $("#dowPick").innerHTML=DOW.map((d,i)=>`<button data-d="${i}" class="${sel.dows.includes(i)?'on':''}" aria-label="${d}曜日" aria-pressed="${sel.dows.includes(i)}">${d}</button>`).join("");
   $("#tgtVal").textContent=sel.target+"回";
+  $("#wkVal").textContent="週"+sel.weekly+"回";
+  $$("#repeatSeg button").forEach(b=>b.classList.toggle("on",b.dataset.r===sel.repeatMode));
+  $("#dowPick").style.display=sel.repeatMode==="dows"?"flex":"none";
+  $("#weeklyStep").style.display=sel.repeatMode==="weekly"?"flex":"none";
 }
+$("#repeatSeg").onclick=e=>{const b=e.target.closest("[data-r]");if(!b)return;sel.repeatMode=b.dataset.r;buildPickers();};
+$("#wkMinus").onclick=()=>{if(sel.weekly>1)sel.weekly--;buildPickers();};
+$("#wkPlus").onclick=()=>{if(sel.weekly<7)sel.weekly++;buildPickers();};
 $("#emojiPick").onclick=e=>{const b=e.target.closest("[data-e]");if(b){sel.emoji=b.dataset.e;buildPickers();}};
 $("#colorPick").onclick=e=>{const b=e.target.closest("[data-c]");if(b){sel.color=b.dataset.c;buildPickers();}};
 $("#dowPick").onclick=e=>{const b=e.target.closest("[data-d]");if(!b)return;const d=+b.dataset.d;
@@ -874,7 +1046,7 @@ function closeAllSheets(){
 $("#mask").onclick=closeAllSheets;
 $("#pauseSwitch").onclick=()=>{sel.paused=!sel.paused;$("#pauseSwitch").classList.toggle("on",sel.paused);};
 $("#fab").onclick=()=>{
-  editing=null;sel={type:"habit",emoji:EMOJIS[Math.floor(Math.random()*EMOJIS.length)],color:COLORS[Math.floor(Math.random()*COLORS.length)],dows:[0,1,2,3,4,5,6],target:1,paused:false};
+  editing=null;sel={type:"habit",emoji:EMOJIS[Math.floor(Math.random()*EMOJIS.length)],color:COLORS[Math.floor(Math.random()*COLORS.length)],dows:[0,1,2,3,4,5,6],target:1,paused:false,repeatMode:"daily",weekly:3};
   $("#sheetTitle").textContent="新しい習慣";$("#nameIn").value="";$("#dueIn").value="";
   $$("#typeSeg button").forEach(x=>x.classList.toggle("on",x.dataset.type==="habit"));
   $("#repeatField").style.display="block";$("#targetField").style.display="block";$("#dueField").style.display="none";$("#pauseField").style.display="none";
@@ -882,7 +1054,9 @@ $("#fab").onclick=()=>{
 function openEdit(id){
   const it=state.items.find(x=>x.id===id);editing=id;
   sel={type:it.type,emoji:it.emoji,color:it.color,target:it.target||1,paused:!!it.paused,
-    dows:it.repeat==="daily"?[0,1,2,3,4,5,6]:(Array.isArray(it.repeat)?[...it.repeat]:[0,1,2,3,4,5,6])};
+    dows:Array.isArray(it.repeat)?[...it.repeat]:[0,1,2,3,4,5,6],
+    repeatMode:isWeekly(it)?"weekly":(Array.isArray(it.repeat)?"dows":"daily"),
+    weekly:isWeekly(it)?it.repeat.w:3};
   $("#sheetTitle").textContent="編集";$("#nameIn").value=it.name;$("#dueIn").value=it.due||"";
   $$("#typeSeg button").forEach(x=>x.classList.toggle("on",x.dataset.type===it.type));
   $("#repeatField").style.display=it.type==="habit"?"block":"none";
@@ -895,12 +1069,42 @@ $("#saveBtn").onclick=()=>{
   const name=$("#nameIn").value.trim();
   if(!name){toast("名前を入力してね");$("#nameIn").focus();return;}
   let repeat="daily";
-  if(sel.type==="habit"){if(sel.dows.length===0){toast("曜日を1つ以上選んでね");return;}repeat=sel.dows.length===7?"daily":[...sel.dows].sort((a,b)=>a-b);}
+  if(sel.type==="habit"){
+    if(sel.repeatMode==="weekly"){repeat={w:sel.weekly};}
+    else if(sel.repeatMode==="dows"){
+      if(sel.dows.length===0){toast("曜日を1つ以上選んでね");return;}
+      repeat=sel.dows.length===7?"daily":[...sel.dows].sort((a,b)=>a-b);
+    }
+  }
   if(editing){const it=state.items.find(x=>x.id===editing);
     it.name=name;it.emoji=sel.emoji;it.color=sel.color;it.type=sel.type;it.repeat=repeat;it.target=sel.type==="habit"?sel.target:1;it.due=sel.type==="task"?($("#dueIn").value||null):null;it.paused=sel.type==="habit"?!!sel.paused:false;}
   else{state.items.push({id:"i"+Date.now()+Math.random().toString(36).slice(2,6),name,emoji:sel.emoji,color:sel.color,type:sel.type,repeat,target:sel.type==="habit"?sel.target:1,due:sel.type==="task"?($("#dueIn").value||null):null,paused:false,done:{},order:state.items.length,createdAt:todayStr()});}
   save();closeSheet();renderToday();checkBadges();toast(editing?"更新しました":"追加しました 🎉");};
-$("#delBtn").onclick=()=>{if(!editing)return;state.items=state.items.filter(x=>x.id!==editing);save();closeSheet();renderToday();toast("削除しました");};
+/* 共通の確認ダイアログ（Promiseで結果を返す） */
+let cdlgResolve=null;
+function confirmDialog(title,msg,okText){
+  $("#cdlgTitle").textContent=title;
+  $("#cdlgMsg").textContent=msg;
+  $("#cdlgYes").textContent=okText||"削除する";
+  $("#cdlg").classList.add("show");
+  return new Promise(res=>{cdlgResolve=res;});
+}
+function closeCdlg(v){$("#cdlg").classList.remove("show");if(cdlgResolve){cdlgResolve(v);cdlgResolve=null;}}
+$("#cdlgYes").onclick=()=>closeCdlg(true);
+$("#cdlgNo").onclick=()=>closeCdlg(false);
+$("#cdlg").onclick=e=>{if(e.target===$("#cdlg"))closeCdlg(false);};
+
+$("#delBtn").onclick=async()=>{
+  if(!editing)return;
+  const it=state.items.find(x=>x.id===editing);
+  if(!it)return;
+  const recs=Object.keys(it.done||{}).filter(k=>k!=="__done").length;
+  const msg=recs>0
+    ? `「${it.name}」と、これまでの記録 ${recs}日分がすべて消えます。この操作は取り消せません。`
+    : `「${it.name}」を削除します。この操作は取り消せません。`;
+  if(!await confirmDialog("削除しますか？",msg,"削除する"))return;
+  state.items=state.items.filter(x=>x.id!==editing);save();closeSheet();renderToday();toast("削除しました");
+};
 
 /* ---------- settings ---------- */
 function renderSettings(){
@@ -941,9 +1145,11 @@ $("#importFile").onchange=e=>{
   }catch(err){toast("ファイルを読み込めませんでした");}};
   r.readAsText(f);e.target.value="";
 };
-$("#resetBtn").onclick=()=>{
-  if(confirm("すべての習慣・タスク・記録を消します。よろしいですか？")){
-    localStorage.removeItem("kotsu_v1");state=load();seedIfEmpty();applyTheme();renderToday();renderSettings();toast("リセットしました");
+$("#resetBtn").onclick=async()=>{
+  if(await confirmDialog("すべてリセットしますか？","登録した習慣・タスクと、これまでの記録・実績がすべて消えます。この操作は取り消せません。","リセットする")){
+    try{localStorage.removeItem(STORE_KEY);}catch(e){}
+    if(NATIVE&&CAP.Preferences){try{CAP.Preferences.remove({key:STORE_KEY});}catch(e){}}
+    state=normalize(null);state._seeded=false;seedIfEmpty();applyTheme();renderToday();renderSettings();toast("リセットしました");
   }
 };
 
@@ -1001,7 +1207,7 @@ function seedIfEmpty(){
     ];state._seeded=true;save();
   }
 }
-if(!localStorage.getItem("kotsu_v1")){state._seeded=false;seedIfEmpty();}
+if(!localStorage.getItem(STORE_KEY)){state._seeded=false;seedIfEmpty();}
 
 /* midnight / refocus refresh */
 let curDay=todayStr();
@@ -1009,8 +1215,13 @@ function tick(){if(todayStr()!==curDay){curDay=todayStr();setDate();renderToday(
 setInterval(tick,30000);
 document.addEventListener("visibilitychange",()=>{if(!document.hidden)tick();});
 
+/* onboarding */
+$("#obdStart").onclick=()=>{$("#obd").classList.remove("show");state.onboarded=true;save();};
+function maybeOnboard(){if(!state.onboarded)setTimeout(()=>$("#obd").classList.add("show"),450);}
+
 /* boot */
 applyTheme();setDate();renderToday();checkBadges();scheduleReminder();nativeScheduleReminder();
+hydrateFromNative();maybeOnboard();
 if("serviceWorker"in navigator&&!NATIVE)navigator.serviceWorker.register("sw.js").catch(()=>{});
 </script>
 </body>

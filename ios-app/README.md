@@ -16,10 +16,10 @@ Webアプリ本体（`../index.html`）をネイティブiOSアプリとして�
 | Webアプリ同梱 | ✅ 済み（`ios/App/App/public/`） |
 | アプリアイコン・スプラッシュ | ✅ 生成済み（1024px・透過なし＝App Store要件OK） |
 | ネイティブ通知・触覚 | ✅ 組み込み済み |
-| `pod install` | ⚠️ **未完了**（Xcodeが必要なため。担当者側で1回実行） |
+| ネイティブ保存(Preferences) | ✅ 組み込み済み（データ消失対策） |
+| `pod install` | ✅ 完了済み（6 pods統合済み） |
 
-> このMacはmacOSが古くXcodeを入れられないため `pod install` のみ未実行です。
-> Xcodeのある環境で `cd ios/App && pod install` を実行すれば完了します。
+> Xcodeのある環境で `npm install` 後に `App.xcworkspace` を開けばそのままビルドできます。
 
 ---
 
