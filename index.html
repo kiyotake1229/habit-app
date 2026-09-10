@@ -147,6 +147,68 @@ header{padding:calc(16px + var(--safe-t)) 20px 8px;display:flex;align-items:cent
 .bar i{display:block;height:100%;border-radius:5px;transition:width .6s}
 .per-row .pc{font-size:13px;font-weight:800;flex:none}
 
+/* identity strip (今日タブ) */
+.ident{background:var(--card);border-radius:18px;padding:14px 16px;margin:0 4px 14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;position:relative;overflow:hidden;cursor:pointer;transition:transform .15s}
+.ident:active{transform:scale(.985)}
+.ident::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--gold),#ff8c42)}
+.ident-l{flex:1;min-width:0}
+.ident-k{font-size:11px;color:var(--sub);font-weight:800;letter-spacing:.5px;margin-bottom:3px}
+.ident-t{font-size:15px;font-weight:800;line-height:1.35}
+.ident-t .sep{color:var(--sub);font-weight:600;margin:0 6px}
+.ident-t.none{font-size:13px;color:var(--sub);font-weight:600}
+.ident-arrow{width:32px;height:32px;border-radius:10px;background:var(--card2);display:grid;place-items:center;color:var(--sub);flex:none}
+
+/* rescue banner (休息チケット) */
+.rescue{background:linear-gradient(135deg,#fff4e0,#ffe7c2);border-radius:18px;padding:14px 16px;margin:0 4px 14px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;border:1px solid #ffd79a}
+:root[data-theme="dark"] .rescue{background:linear-gradient(135deg,#3a2d14,#4a3818);border-color:#6b5324}
+.rescue-h{display:flex;align-items:center;gap:10px;font-size:13.5px;font-weight:700;line-height:1.45}
+.rescue-h .ri{width:34px;height:34px;border-radius:10px;background:rgba(255,180,0,.2);display:grid;place-items:center;color:#d98c00;flex:none}
+.rescue-btns{display:flex;gap:8px}
+.rescue-btns button{padding:10px 12px;border-radius:12px;font-size:13px;font-weight:800;transition:transform .15s}
+.rescue-btns button:active{transform:scale(.96)}
+.rescue-use{flex:1;background:var(--gold);color:#3a2800}
+.rescue-skip{background:rgba(0,0,0,.06);color:var(--text)}
+:root[data-theme="dark"] .rescue-skip{background:rgba(255,255,255,.08)}
+
+/* rank chips & rust states */
+.rank{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-weight:800;font-size:11.5px;background:linear-gradient(135deg,#fff1c9,#ffe19a);color:#7a5200;border:1px solid #f5d27a}
+:root[data-theme="dark"] .rank{background:linear-gradient(135deg,#4a3a12,#5c4816);color:#ffd67a;border-color:#7a6020}
+.rank svg{width:11px;height:11px}
+.rank.r0{background:var(--card2);color:var(--sub);border-color:var(--line)}
+.rank.r4,.rank.r5,.rank.r6{background:linear-gradient(135deg,#ffd76a,#ffb400);color:#4a3000;border-color:#e0a000;box-shadow:0 2px 8px rgba(255,180,0,.35)}
+.rustchip{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-weight:800;font-size:11px}
+.rustchip.l1{background:#e9e9ef;color:#6b6f80}
+.rustchip.l2{background:#f3e0d6;color:#a5522a}
+.rustchip.l3{background:#ffd9d9;color:#c0392b;animation:rustpulse 1.6s infinite}
+:root[data-theme="dark"] .rustchip.l1{background:#2c2f3d;color:#9a9eb0}
+:root[data-theme="dark"] .rustchip.l2{background:#4a2f22;color:#e08a5c}
+:root[data-theme="dark"] .rustchip.l3{background:#4d1f1f;color:#ff7b7b}
+@keyframes rustpulse{0%,100%{opacity:1}50%{opacity:.55}}
+.item.rust1 .em{filter:saturate(.6)}
+.item.rust2 .em{filter:saturate(.35) sepia(.4)}
+.item.rust3 .em{filter:saturate(.2) sepia(.6) contrast(.85)}
+.item.rust2 .nm,.item.rust3 .nm{color:var(--sub)}
+
+/* 称号カード（統計タブ） */
+.tcard{background:linear-gradient(135deg,#1c1a2e,#3a2f6b 55%,#6C5CE7);border-radius:24px;padding:22px 20px;margin:8px 4px 16px;color:#fff;position:relative;overflow:hidden;box-shadow:0 14px 40px rgba(50,40,120,.4)}
+.tcard::before{content:"";position:absolute;right:-40px;top:-40px;width:180px;height:180px;border-radius:50%;background:radial-gradient(circle,rgba(255,215,106,.35),transparent 70%)}
+.tcard::after{content:"";position:absolute;left:-30px;bottom:-50px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.06)}
+.tcard-k{font-size:11px;font-weight:800;letter-spacing:1.5px;opacity:.75;margin-bottom:6px}
+.tcard-h{font-size:22px;font-weight:800;line-height:1.3;margin-bottom:14px;position:relative}
+.tcard-h.none{font-size:15px;opacity:.85;font-weight:700}
+.tcard-list{display:flex;flex-direction:column;gap:8px;position:relative}
+.tcard-row{display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.1);border-radius:14px;padding:10px 12px;backdrop-filter:blur(4px)}
+.tcard-row .te{width:34px;height:34px;border-radius:10px;background:rgba(255,255,255,.15);display:grid;place-items:center;font-size:18px;flex:none}
+.tcard-row .ti{flex:1;min-width:0}
+.tcard-row .tt{font-size:14px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.tcard-row .ts{font-size:11px;opacity:.8;font-weight:600;margin-top:2px}
+.tcard-row .tbar{height:5px;border-radius:4px;background:rgba(255,255,255,.2);margin-top:5px;overflow:hidden}
+.tcard-row .tbar i{display:block;height:100%;background:linear-gradient(90deg,#ffd76a,#ffb400);border-radius:4px}
+.tcard-foot{display:flex;align-items:center;justify-content:space-between;margin-top:16px;position:relative;gap:10px}
+.tcard-tk{font-size:12px;font-weight:700;opacity:.9;display:flex;align-items:center;gap:6px}
+.tcard-share{display:inline-flex;align-items:center;gap:6px;padding:10px 14px;border-radius:12px;background:#fff;color:#3a2f6b;font-size:13px;font-weight:800;transition:transform .15s}
+.tcard-share:active{transform:scale(.95)}
+
 /* quote banner */
 .quote{background:var(--card);border-radius:16px;padding:12px 16px;margin:0 4px 14px;box-shadow:var(--shadow);border-left:4px solid var(--accent);display:flex;align-items:center;gap:10px}
 .quote .g{font-size:20px;flex:none}
@@ -293,12 +355,35 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
         <p id="sumSub">習慣を追加してみよう</p>
       </div>
     </div>
+    <div class="ident" id="identStrip" style="display:none" role="button" tabindex="0" aria-label="称号カードを見る">
+      <div class="ident-l"><div class="ident-k">あなたは今</div><div class="ident-t" id="identText"></div></div>
+      <div class="ident-arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18l6-6-6-6"/></svg></div>
+    </div>
+    <div class="rescue" id="rescueBanner" style="display:none">
+      <div class="rescue-h">
+        <div class="ri" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div>
+        <div id="rescueText">昨日、やらなかった習慣があります。</div>
+      </div>
+      <div class="rescue-btns">
+        <button class="rescue-use" id="rescueUse">休息チケットを使う</button>
+        <button class="rescue-skip" id="rescueSkip">そのまま</button>
+      </div>
+    </div>
     <div class="quote" id="quoteBanner" style="display:none"><div class="g" id="qGreet">☀️</div><div class="qt" id="qText"></div></div>
     <div id="todayContent"></div>
   </section>
 
   <!-- 統計 -->
   <section class="screen" id="s-stats">
+    <div class="tcard" id="tcard">
+      <div class="tcard-k">あなたは今</div>
+      <div class="tcard-h" id="tcardHead"></div>
+      <div class="tcard-list" id="tcardList"></div>
+      <div class="tcard-foot">
+        <div class="tcard-tk" id="tcardTk"></div>
+        <button class="tcard-share" id="tcardShare" aria-label="称号カードを画像で共有"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4M12 2v13"/></svg>共有</button>
+      </div>
+    </div>
     <div class="panel">
       <div class="lv-top">
         <div class="lv-badge" id="lvBadge">1</div>
@@ -423,7 +508,7 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
   </div>
   <div class="field">
     <label>名前</label>
-    <input type="text" id="nameIn" placeholder="例：水を2L飲む" maxlength="24">
+    <input type="text" id="nameIn" placeholder="例：読書、筋トレ、早起き" maxlength="24">
   </div>
   <div class="field">
     <label>アイコン</label>
@@ -476,17 +561,29 @@ input[type=date]{width:100%;padding:14px;border-radius:14px;border:2px solid var
   <h3 id="daySheetTitle">記録</h3>
   <p style="font-size:12px;color:var(--sub);font-weight:600;margin:-8px 0 14px">タップでその日の達成を記録できます</p>
   <div class="list" id="dayList"></div>
+  <div id="dayRestWrap" style="margin-top:14px;display:none">
+    <button class="mini-btn" id="dayRestBtn" style="width:100%;padding:13px;font-size:14px;display:flex;align-items:center;justify-content:center;gap:8px"></button>
+    <p style="font-size:11.5px;color:var(--sub);font-weight:600;text-align:center;margin-top:8px">休息日はサボり扱いにならず、ストリークも称号も守られます</p>
+  </div>
 </div>
 
 <div class="obd" id="obd" role="dialog" aria-modal="true" aria-labelledby="obdTitle">
   <div class="obd-card">
     <div class="obd-ic" aria-hidden="true">🌱</div>
     <h3 id="obdTitle">コツコツへようこそ</h3>
-    <p class="obd-lead">続けるほど、記録が育っていきます。</p>
+    <p class="obd-lead">続けるほど「あなた」が育つアプリです。</p>
     <ul class="obd-list">
+      <li>
+        <div class="oi" aria-hidden="true" style="color:#d98c00"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg></div>
+        <div><b>称号が育ち、錆びる</b><span class="d">続けると「読書の達人」のような称号に進化。サボると錆びて、5日空くと1段階下がります。</span></div>
+      </li>
       <li>
         <div class="oi" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg></div>
         <div><b>タップで記録</b><span class="d">右の丸をタップするだけ。「1日8回」など回数タイプは、押すたびに増えます。</span></div>
+      </li>
+      <li>
+        <div class="oi" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg></div>
+        <div><b>月1回の休息チケット</b><span class="d">どうしても無理な日は休息にできます。サボり扱いにならず、称号もストリークも守られます。</span></div>
       </li>
       <li>
         <div class="oi" aria-hidden="true"><svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg></div>
@@ -637,12 +734,36 @@ function scheduledToday(it,ds){
 /* 今日の達成扱い（週◯回は週の目標を満たしていればOK） */
 function todayDone(it,ds){return isDone(it,ds)||(isWeekly(it)&&weeklyMet(it,ds));}
 /* 統計用: その日が[対象か, 達成したか]。週◯回は達成日だけ加算して未達日で減点しない */
+/* 休息チケット: 月1枚。使った日はサボり扱いにならない */
+function isRest(ds){return !!(state.rest&&state.rest[ds]);}
+function monthKey(ds){return (ds||todayStr()).slice(0,7);}
+function restTicketsLeft(){const used=(state.restUsed||{})[monthKey()]||0;return Math.max(0,1-used);}
+function canRestOn(ds){ // 今日を除く直近7日以内のみ
+  if(ds>=todayStr())return false;
+  const d=new Date();d.setDate(d.getDate()-7);return ds>=dstr(d);
+}
+function useRestTicket(ds){
+  if(isRest(ds))return true;
+  if(restTicketsLeft()<=0||!canRestOn(ds))return false;
+  state.rest=state.rest||{};state.rest[ds]=true;
+  state.restUsed=state.restUsed||{};const k=monthKey();state.restUsed[k]=(state.restUsed[k]||0)+1;
+  save();return true;
+}
+function undoRest(ds){
+  if(!isRest(ds))return;
+  delete state.rest[ds];
+  const k=monthKey();if(state.restUsed&&state.restUsed[k]>0)state.restUsed[k]--;
+  save();
+}
+
 function statDay(it,dd){
   if(it.type!=="habit"||it.paused)return [0,0];
   if(isWeekly(it))return isDone(it,dd)?[1,1]:[0,0];
   const d=new Date(dd+"T00:00:00"),dow=d.getDay();
   const sch=it.repeat==="daily"||(Array.isArray(it.repeat)&&it.repeat.includes(dow));
-  return sch?[1,isDone(it,dd)?1:0]:[0,0];
+  if(!sch)return [0,0];
+  if(isDone(it,dd))return [1,1];
+  return isRest(dd)?[0,0]:[1,0];
 }
 function streak(it){
   if(it.type!=="habit")return 0;
@@ -661,11 +782,97 @@ function streak(it){
     const sched=it.repeat==="daily"||(Array.isArray(it.repeat)&&it.repeat.includes(dow));
     if(sched){
       if(isDone(it,ds))s++;
-      else if(ds!==todayStr())break;
+      else if(ds!==todayStr()&&!isRest(ds))break;   // 休息日は連続を切らない
     }
     d.setDate(d.getDate()-1);
   }
   return s;
+}
+
+/* ---------- 称号（ランク）と錆び ---------- */
+const RANKS=[
+  {name:"見習い",min:0,  wmin:0},
+  {name:"入門者",min:3,  wmin:1},
+  {name:"常連",  min:7,  wmin:2},
+  {name:"実践者",min:21, wmin:4},
+  {name:"達人",  min:50, wmin:8},
+  {name:"師範",  min:100,wmin:16},
+  {name:"伝説",  min:365,wmin:52},
+];
+function rankFromStreak(it,s){const w=isWeekly(it);let r=0;RANKS.forEach((k,i)=>{if(s>=(w?k.wmin:k.min))r=i;});return r;}
+function rankName(it){return RANKS[Math.min(it.rank||0,RANKS.length-1)].name;}
+function fullTitle(it){return `${it.name}の${rankName(it)}`;}
+function nextRankInfo(it){
+  const r=it.rank||0;if(r>=RANKS.length-1)return null;
+  const nk=RANKS[r+1];const need=isWeekly(it)?nk.wmin:nk.min;const s=streak(it);
+  return {name:nk.name,need,have:Math.min(s,need),left:Math.max(0,need-s),unit:isWeekly(it)?"週":"日"};
+}
+/* 昨日まで遡った「やらなかった連続数」。休息日・作成前は数えない */
+function missedRun(it){
+  if(it.type!=="habit"||it.paused)return 0;
+  const created=it.createdAt||"0000-00-00";
+  if(isWeekly(it)){
+    if(weeklyMet(it,todayStr()))return 0;   // 今週達成済みなら錆びない
+    let n=0;const base=new Date();
+    for(let w=1;w<60;w++){const ref=new Date(base);ref.setDate(base.getDate()-w*7);
+      const ds=dstr(ref);if(ds<created)break;
+      if(weeklyMet(it,ds))break;n++;}
+    return n;
+  }
+  if(isDone(it,todayStr()))return 0;        // 今日やれば錆びは即消える
+  let n=0;const d=new Date();d.setDate(d.getDate()-1);
+  for(let i=0;i<120;i++){
+    const ds=dstr(d);if(ds<created)break;
+    const dow=d.getDay();
+    const sched=it.repeat==="daily"||(Array.isArray(it.repeat)&&it.repeat.includes(dow));
+    if(sched&&!isRest(ds)){if(isDone(it,ds))break;n++;}
+    d.setDate(d.getDate()-1);
+  }
+  return n;
+}
+/* 0:輝き 1:くすみ 2:錆び 3:失いかけ */
+function rustLevel(it){
+  const m=it.rust||0;if(m===0||!(it.rank>0))return 0;
+  if(isWeekly(it))return m>=1?3:0;
+  return m>=4?3:(m>=2?2:1);
+}
+const RUST_LABEL=["","くすんでいる","錆びている","失いかけ"];
+let rankEvents=[];
+function updateRanks(){
+  let changed=false;
+  state.items.forEach(it=>{
+    if(it.type!=="habit")return;
+    const s=streak(it),nr=rankFromStreak(it,s);
+    if(it.rank==null){it.rank=nr;it.rust=0;it.rustDrops=0;changed=true;return;} // 既存データ移行時は静かに初期化
+    if(nr>it.rank){it.rank=nr;rankEvents.push({type:"up",it});changed=true;}
+    const m=missedRun(it);
+    if((it.rust||0)!==m){it.rust=m;changed=true;}
+    const per=isWeekly(it)?2:5;
+    const drops=Math.floor(m/per),applied=it.rustDrops||0;
+    if(m===0){if(applied){it.rustDrops=0;changed=true;}}
+    else if(drops>applied){
+      const dec=drops-applied;
+      if(it.rank>0){const from=it.rank;it.rank=Math.max(0,it.rank-dec);rankEvents.push({type:"down",it,from});}
+      it.rustDrops=drops;changed=true;
+    }
+  });
+  if(changed)save();
+  if(rankEvents.length)flushRankEvents();
+}
+function flushRankEvents(){
+  rankEvents.forEach(ev=>{
+    if(ev.type==="up")badgeQueue.push({icHtml:ICON_STAR,t1:"称号を獲得！",name:fullTitle(ev.it),desc:`${streak(ev.it)}${isWeekly(ev.it)?"週":"日"}続けて、称号が進化しました`});
+    else badgeQueue.push({icHtml:ICON_RUST,t1:"称号が錆び落ちました",name:`${ev.it.name}の${RANKS[ev.from].name} → ${rankName(ev.it)}`,desc:"間が空いて1段階下がりました。今日やれば輝きが戻ります"});
+  });
+  rankEvents=[];
+  showNextBadge();
+}
+const ICON_STAR='<svg width="56" height="56" viewBox="0 0 24 24" fill="#ffb400" stroke="#e09a00" stroke-width="1" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>';
+const ICON_RUST='<svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#c0392b" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" opacity=".45"/><path d="M4 4l16 16"/></svg>';
+/* 総合の自己像: ランクの高い順に最大3つ */
+function identityTitles(){
+  return state.items.filter(it=>it.type==="habit"&&!it.paused&&(it.rank||0)>=1)
+    .sort((a,b)=>(b.rank-a.rank)||(streak(b)-streak(a))).slice(0,3);
 }
 
 /* ---------- aggregate stats ---------- */
@@ -706,8 +913,33 @@ $("#themeSeg").onclick=e=>{const b=e.target.closest("[data-t]");if(!b)return;sta
 /* ---------- today ---------- */
 function esc(s){return s.replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]))}
 function sortItems(a,b){return (a.order||0)-(b.order||0)}
+function renderIdentity(){
+  const el=$("#identStrip"),t=$("#identText");
+  const titles=identityTitles();
+  const hasHabit=state.items.some(it=>it.type==="habit"&&!it.paused);
+  if(!hasHabit){el.style.display="none";return;}
+  el.style.display="flex";
+  if(!titles.length){t.className="ident-t none";t.textContent="まだ称号がありません。3日続けると最初の称号が手に入ります。";return;}
+  t.className="ident-t";
+  t.innerHTML=titles.map(it=>esc(fullTitle(it))).join('<span class="sep">·</span>');
+}
+function renderRescue(){
+  const el=$("#rescueBanner");
+  const y=new Date();y.setDate(y.getDate()-1);const yd=dstr(y);
+  if(state.rescueSeen===yd||isRest(yd)||restTicketsLeft()<=0){el.style.display="none";return;}
+  const missed=state.items.filter(it=>it.type==="habit"&&!it.paused&&!isWeekly(it)&&(it.rank||0)>0&&statDay(it,yd)[0]===1&&!isDone(it,yd));
+  if(!missed.length){el.style.display="none";return;}
+  $("#rescueText").innerHTML=`昨日、<b>${missed.length}件</b>やらなかった習慣があります。休息チケットを使えば、称号とストリークが守られます。`;
+  $("#rescueUse").textContent=`休息チケットを使う（残り${restTicketsLeft()}）`;
+  el.style.display="flex";el.dataset.date=yd;
+}
+$("#rescueUse").onclick=()=>{const yd=$("#rescueBanner").dataset.date;if(useRestTicket(yd)){toast("昨日を休息日にしました");haptic("LIGHT");}else toast("休息チケットが使えません");renderToday();};
+$("#rescueSkip").onclick=()=>{state.rescueSeen=$("#rescueBanner").dataset.date;save();renderToday();};
+$("#identStrip").onclick=()=>{$$(".tab")[1].click();setTimeout(()=>$("#tcard").scrollIntoView({behavior:"smooth",block:"start"}),80);};
 function renderToday(){
+  updateRanks();
   const ds=todayStr();
+  renderIdentity();renderRescue();
   const habits=state.items.filter(it=>it.type==="habit"&&scheduledToday(it,ds)).sort(sortItems);
   const tasks=state.items.filter(it=>it.type==="task"&&!(it.done&&it.done.__done)).sort(sortItems);
   const all=[...habits,...tasks];
@@ -798,7 +1030,14 @@ function itemCard(it,ds){
   const checkInner=showNum
     ? `<span class="num">${c}</span>`
     : `<svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L20 6"/></svg>`;
-  return `<div class="item ${done?"done":""}" data-id="${it.id}">
+  let rustCls="",rankHtml="";
+  if(it.type==="habit"){
+    const r=it.rank||0,rl=rustLevel(it);
+    rankHtml=`<span class="rank r${r}"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.3 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z"/></svg>${rankName(it)}</span>`;
+    if(rl>0&&!done){rustCls=" rust"+rl;rankHtml+=` <span class="rustchip l${rl}">${RUST_LABEL[rl]}</span>`;state+=`、称号が${RUST_LABEL[rl]}`;}
+    meta=rankHtml+" "+meta;
+  }
+  return `<div class="item ${done?"done":""}${rustCls}" data-id="${it.id}">
     <div class="em" aria-hidden="true" style="background:${it.color}22;color:${it.color}">${it.emoji}</div>
     <div class="item-body"><div class="nm">${esc(it.name)}</div><div class="meta">${meta}</div></div>
     <button class="check" data-check="${it.id}" role="checkbox" aria-checked="${done?"true":"false"}" aria-label="${esc(it.name)} ${state}">${checkInner}</button>
@@ -876,7 +1115,62 @@ function commitOrder(){
 
 /* ---------- stats ---------- */
 let calCursor=new Date();
+function renderTitleCard(){
+  updateRanks();
+  const habits=state.items.filter(it=>it.type==="habit"&&!it.paused).sort((a,b)=>((b.rank||0)-(a.rank||0))||(streak(b)-streak(a)));
+  const titles=identityTitles();
+  const head=$("#tcardHead");
+  if(!habits.length){head.className="tcard-h none";head.textContent="習慣を追加すると、あなたの称号が育ちはじめます。";}
+  else if(!titles.length){head.className="tcard-h none";head.textContent="まだ称号がありません。3日続けると最初の称号が手に入ります。";}
+  else{head.className="tcard-h";head.innerHTML=titles.map(it=>esc(fullTitle(it))).join('<span style="opacity:.5;margin:0 8px">·</span>');}
+  $("#tcardList").innerHTML=habits.slice(0,6).map(it=>{
+    const n=nextRankInfo(it),rl=rustLevel(it);
+    const sub=rl>0?`<span style="color:#ffb3a7">${RUST_LABEL[rl]}（${it.rust}${isWeekly(it)?"週":"日"}空き）</span>`
+      :(n?`次の「${n.name}」まで あと${n.left}${n.unit}`:"最高ランクに到達");
+    const pct=n?Math.round(n.have/n.need*100):100;
+    return `<div class="tcard-row"><div class="te" aria-hidden="true">${it.emoji}</div>
+      <div class="ti"><div class="tt">${esc(fullTitle(it))}</div><div class="ts">${sub}</div><div class="tbar"><i style="width:${pct}%"></i></div></div></div>`;}).join("");
+  const left=restTicketsLeft();
+  $("#tcardTk").innerHTML=`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>今月の休息チケット ${left}/1`;
+  $("#tcardShare").style.display=habits.length?"inline-flex":"none";
+}
+/* 称号カードを画像化して共有 */
+function roundRect(ctx,x,y,w,h,r){ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();}
+async function shareTitleCard(){
+  const W=1080,H=1350,cv=document.createElement("canvas");cv.width=W;cv.height=H;const x=cv.getContext("2d");
+  const g=x.createLinearGradient(0,0,W,H);g.addColorStop(0,"#1c1a2e");g.addColorStop(.55,"#3a2f6b");g.addColorStop(1,"#6C5CE7");
+  x.fillStyle=g;x.fillRect(0,0,W,H);
+  const rg=x.createRadialGradient(W-120,80,10,W-120,80,420);rg.addColorStop(0,"rgba(255,215,106,.45)");rg.addColorStop(1,"rgba(255,215,106,0)");x.fillStyle=rg;x.fillRect(0,0,W,H);
+  x.fillStyle="rgba(255,255,255,.75)";x.font="700 34px -apple-system,'Hiragino Sans',sans-serif";x.fillText("コツコツ",80,120);
+  x.fillStyle="rgba(255,255,255,.7)";x.font="800 30px -apple-system,'Hiragino Sans',sans-serif";x.fillText("あなたは今",80,230);
+  const titles=identityTitles();
+  x.fillStyle="#fff";x.font="800 64px -apple-system,'Hiragino Sans',sans-serif";
+  let y=320;titles.forEach(it=>{x.fillText(fullTitle(it),80,y);y+=90;});
+  if(!titles.length){x.font="700 40px -apple-system,'Hiragino Sans',sans-serif";x.fillText("称号を育てはじめました",80,y);y+=90;}
+  y+=30;
+  const habits=state.items.filter(it=>it.type==="habit"&&!it.paused).sort((a,b)=>((b.rank||0)-(a.rank||0))||(streak(b)-streak(a))).slice(0,5);
+  habits.forEach(it=>{
+    roundRect(x,80,y,W-160,110,26);x.fillStyle="rgba(255,255,255,.12)";x.fill();
+    x.fillStyle="#fff";x.font="800 36px -apple-system,'Hiragino Sans',sans-serif";x.fillText(`${it.emoji}  ${fullTitle(it)}`,110,y+50);
+    x.fillStyle="rgba(255,255,255,.75)";x.font="600 26px -apple-system,'Hiragino Sans',sans-serif";
+    const s=streak(it),rl=rustLevel(it);
+    x.fillText(rl>0?`${RUST_LABEL[rl]}…`:`${s}${isWeekly(it)?"週":"日"}継続`,110,y+90);
+    y+=130;});
+  const d=new Date();x.fillStyle="rgba(255,255,255,.6)";x.font="600 28px -apple-system,'Hiragino Sans',sans-serif";
+  x.fillText(`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,"0")}.${String(d.getDate()).padStart(2,"0")}`,80,H-80);
+  x.textAlign="right";x.fillText("#コツコツ",W-80,H-80);
+  const blob=await new Promise(r=>cv.toBlob(r,"image/png"));
+  const file=new File([blob],"kotsu-title.png",{type:"image/png"});
+  const text=titles.length?`あなたは今「${titles.map(fullTitle).join("・")}」 #コツコツ`:"コツコツで称号を育てています #コツコツ";
+  try{
+    if(navigator.canShare&&navigator.canShare({files:[file]})){await navigator.share({files:[file],text});return;}
+  }catch(e){if(e&&e.name==="AbortError")return;}
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="kotsu-title.png";document.body.appendChild(a);a.click();a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url),1500);toast("称号カードを保存しました");
+}
+$("#tcardShare").onclick=shareTitleCard;
 function renderStats(){
+  renderTitleCard();
   const A=aggregate();
   // level
   $("#lvBadge").textContent=A.level;
@@ -955,12 +1249,31 @@ $("#calGrid").addEventListener("click",e=>{const cell=e.target.closest("[data-d]
 function openDaySheet(dd){
   dayDate=dd;const d=new Date(dd+"T00:00:00");
   const label=dd===todayStr()?"今日":`${d.getMonth()+1}月${d.getDate()}日 (${DOW[d.getDay()]})`;
-  $("#daySheetTitle").textContent=label+" の記録";
+  $("#daySheetTitle").textContent=label+" の記録"+(isRest(dd)?"（休息日）":"");
   renderDayList();
   $("#mask").classList.add("open");$("#daySheet").classList.add("open");
 }
+function renderDayRest(){
+  const dd=dayDate,wrap=$("#dayRestWrap"),btn=$("#dayRestBtn");
+  const rest=isRest(dd);
+  if(!rest&&!canRestOn(dd)){wrap.style.display="none";return;}
+  wrap.style.display="block";
+  const ic='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22c5.5 0 10-4.5 10-10S17.5 2 12 2 2 6.5 2 12s4.5 10 10 10z"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>';
+  if(rest){btn.innerHTML=ic+"休息日を取り消す";btn.style.color="var(--sub)";}
+  else{const left=restTicketsLeft();btn.innerHTML=ic+`この日を休息日にする（今月あと${left}枚）`;btn.style.color=left?"var(--accent)":"var(--sub)";btn.disabled=!left;}
+}
+$("#dayRestBtn").onclick=()=>{
+  const dd=dayDate;
+  if(isRest(dd)){undoRest(dd);toast("休息日を取り消しました");}
+  else if(useRestTicket(dd)){toast("休息日にしました");haptic("LIGHT");}
+  else{toast("今月の休息チケットは使い切りました");return;}
+  const d=new Date(dayDate+"T00:00:00");
+  $("#daySheetTitle").textContent=(dayDate===todayStr()?"今日":`${d.getMonth()+1}月${d.getDate()}日 (${DOW[d.getDay()]})`)+" の記録"+(isRest(dayDate)?"（休息日）":"");
+  renderDayList();renderDayRest();
+};
 function renderDayList(){
   const dd=dayDate;
+  renderDayRest();
   const habits=state.items.filter(it=>it.type==="habit"&&scheduledToday(it,dd)).sort(sortItems);
   if(!habits.length){$("#dayList").innerHTML=`<div class="empty" style="padding:24px 0"><p>この日に予定された<br>習慣はありません</p></div>`;return;}
   $("#dayList").innerHTML=habits.map(it=>{const done=isDone(it,dd);
@@ -988,11 +1301,14 @@ function checkBadges(){
 }
 function showNextBadge(){
   if(!badgeQueue.length)return;
+  if($("#bpop").classList.contains("show"))return; // 表示中なら順番待ち
   const b=badgeQueue.shift();
-  $("#bpopIc").textContent=b.ic;$("#bpopName").textContent=b.name;$("#bpopDesc").textContent=b.desc;
-  $("#bpop").classList.add("show");
+  if(b.icHtml)$("#bpopIc").innerHTML=b.icHtml;else $("#bpopIc").textContent=b.ic;
+  $("#bpop .t1").textContent=b.t1||"実績を解除！";
+  $("#bpopName").textContent=b.name;$("#bpopDesc").textContent=b.desc;
+  $("#bpop").classList.add("show");haptic("MEDIUM");
   clearTimeout(showNextBadge._t);
-  showNextBadge._t=setTimeout(()=>{$("#bpop").classList.remove("show");if(badgeQueue.length)setTimeout(showNextBadge,400);},2200);
+  showNextBadge._t=setTimeout(()=>{$("#bpop").classList.remove("show");if(badgeQueue.length)setTimeout(showNextBadge,400);},2400);
 }
 $("#bpop").onclick=()=>{$("#bpop").classList.remove("show");clearTimeout(showNextBadge._t);if(badgeQueue.length)setTimeout(showNextBadge,300);};
 
@@ -1201,8 +1517,8 @@ function setDate(){const d=new Date();$("#hDate").textContent=`${d.getMonth()+1}
 function seedIfEmpty(){
   if(state.items.length===0&&!state._seeded){
     state.items=[
-      {id:"seed1",name:"水を飲む",emoji:"💧",color:COLORS[4],type:"habit",repeat:"daily",target:8,due:null,done:{},order:0,createdAt:todayStr()},
-      {id:"seed2",name:"運動する",emoji:"🏃",color:COLORS[1],type:"habit",repeat:"daily",target:1,due:null,done:{},order:1,createdAt:todayStr()},
+      {id:"seed1",name:"水分補給",emoji:"💧",color:COLORS[4],type:"habit",repeat:"daily",target:8,due:null,done:{},order:0,createdAt:todayStr()},
+      {id:"seed2",name:"運動",emoji:"🏃",color:COLORS[1],type:"habit",repeat:"daily",target:1,due:null,done:{},order:1,createdAt:todayStr()},
       {id:"seed3",name:"読書",emoji:"📚",color:COLORS[0],type:"habit",repeat:[1,2,3,4,5],target:1,due:null,done:{},order:2,createdAt:todayStr()},
     ];state._seeded=true;save();
   }
