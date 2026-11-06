@@ -123,6 +123,7 @@ jobs:
           ID=$($PB -c "Print :CFBundleIdentifier" "$APP/Info.plist")
           [ "$ID" = "work.ltv.kotsu" ] || { echo "::error::Bundle ID が違います: $ID"; exit 1; }
           [ "$($PB -c "Print :ITSAppUsesNonExemptEncryption" "$APP/Info.plist")" = "false" ] || { echo "::error::ITSAppUsesNonExemptEncryption が false ではありません"; exit 1; }
+          $PB -c "Print :NSPhotoLibraryAddUsageDescription" "$APP/Info.plist" >/dev/null || { echo "::error::NSPhotoLibraryAddUsageDescription がありません（共有シートで画像を保存すると落ちる）"; exit 1; }
           echo "表示名: $($PB -c "Print :CFBundleDisplayName" "$APP/Info.plist")"
           echo "同梱した Web 資産:"; ls -1 "$APP/public"
           echo "フレームワーク:"; ls -1 "$APP/Frameworks"
