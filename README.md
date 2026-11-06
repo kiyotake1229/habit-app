@@ -10,7 +10,7 @@
 | 通信 | なし（完全オフライン） |
 | データ | 端末内のみ（localStorage＋ネイティブ保存の二重化） |
 | PWA | 対応（`manifest.json` / `sw.js` / アイコン一式） |
-| iOS | **Capacitor 構築済み** → [`ios-app/`](ios-app/) |
+| iOS | **Capacitor 構築済み** → [`ios-app/`](ios-app/)。GitHub Actions（Xcode 26）でビルド確認済み。プライバシーマニフェストと暗号化の申告あり（docs #0002） |
 
 ---
 
@@ -60,6 +60,7 @@ habit/
     岩崎さんへの引き渡し手順.md
     README.md           開発者向けメモ
     v1.1-HealthKit連携メモ.md   次バージョンの技術調査（未着手）
+  .github/workflows/ios-build.yml   iOS のビルド確認（GitHub Actions。push で動く。Xcode 26 に固定。docs #0002）
 ```
 
 ## 修正したいとき
